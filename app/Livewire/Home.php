@@ -44,22 +44,6 @@ class Home extends Component
         ]);
     }
 
-    public function getResult($task_id)
-    {
-        $url = 'https://aip.baidubce.com/rpc/2.0/ernievilg/v1/getImgv2?access_token='.cache('token');
-        $params = [
-            'task_id' => $task_id,
-        ];
-
-        $response = Http::post($url, $params);
-
-        if ($response->ok() && $response->json()['data']['task_status'] == 'SUCCESS') {
-            Task::where('task_id', $task_id)->update([
-                'result' => $response->json()['data']['sub_task_result_list'][0]['final_image_list'][0]['img_url'],
-            ]);
-        }
-    }
-
     protected function sendTask($prompt, $width, $height)
     {
         $url = 'https://aip.baidubce.com/rpc/2.0/ernievilg/v1/txt2imgv2?access_token='.cache('token');
@@ -74,5 +58,31 @@ class Home extends Component
         if ($response->ok()) {
             return $response->json()['data']['task_id'];
         }
+    }
+
+    public function getResult($task_id)
+    {
+        $url = 'https://aip.baidubce.com/rpc/2.0/ernievilg/v1/getImgv2?access_token='.cache('token');
+        $params = [
+            'task_id' => $task_id,
+        ];
+
+        $response = Http::post($url, $params);
+
+        if ($response->ok()) {
+            if ($response->json()['data']['task_status'] == 'FAILED') {
+                Task::where('task_id', $task_id)->update([
+                    'result' => 'http://ledoteaching.cdn.pinweb.io/dali/20231125_wAatdB.png',
+                ]);
+            }
+
+            if ($response->json()['data']['task_status'] == 'SUCCESS') {
+                Task::where('task_id', $task_id)->update([
+                    'result' => $response->json()['data']['sub_task_result_list'][0]['final_image_list'][0]['img_url'],
+                ]);
+            }
+
+        }
+
     }
 }
