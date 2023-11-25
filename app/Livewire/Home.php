@@ -31,7 +31,7 @@ class Home extends Component
 
     public function save()
     {
-        $task_id = $this->sendTask($this->prompt, $this->width, $this->height);
+        $task_id = $this->sendTask($this->prompt, $this->width, $this->height, $this->change_degree, $this->url);
 
         $task = Task::create([
             'user_id' => 1,
@@ -55,13 +55,15 @@ class Home extends Component
         ]);
     }
 
-    protected function sendTask($prompt, $width, $height)
+    protected function sendTask($prompt, $width, $height, $change_degree, $reference = '')
     {
         $url = 'https://aip.baidubce.com/rpc/2.0/ernievilg/v1/txt2imgv2?access_token='.cache('token');
         $params = [
             'prompt' => $prompt,
             'width' => $width,
             'height' => $height,
+            'change_degree' => $change_degree,
+            'url' => $reference,
         ];
 
         $response = Http::post($url, $params);

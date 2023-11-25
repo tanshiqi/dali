@@ -13,7 +13,7 @@
                     <div class="">
                         <label class="block text-sm font-medium leading-6 text-white" for="country">图片尺寸</label>
                         <div class="mt-2">
-                            <select class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6 [&_*]:text-black"
+                            <select class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-sky-500 sm:text-sm sm:leading-6 [&_*]:text-black"
                                     id="size" name="size" wire:model.live='size' wire:change='sizeChanged'>
                                 <option>512 x 512</option>
                                 <option>640 x 360</option>
@@ -30,28 +30,29 @@
                     <div class="">
                         <label class="block text-sm font-medium leading-6 text-white" for="email">参考图 URL</label>
                         <div class="mt-2">
-                            <input class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                            <input class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-sky-500 sm:text-sm sm:leading-6"
                                    id="url" name="url" type="url" wire:model.live.debounce='url'>
                         </div>
                     </div>
                     <div class="">
                         <label class="block text-sm font-medium leading-6 text-white" for="email">参考图影响因子</label>
                         <div class="mt-2">
-                            <input class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                            <input class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-sky-500 sm:text-sm sm:leading-6"
                                    id="change_degree" name="change_degree" type="text" wire:model.number.live='change_degree'
                                    placeholder="支持 1-10 内，数值越大参考图影响越大">
                         </div>
+                        <p class="mt-2 text-xs leading-5 text-gray-400">数字 1-10，数值越大参考图影响越大。</p>
                     </div>
                     <div class="">
                         <label class="block text-sm font-medium leading-6 text-white" for="about">Prompt</label>
                         <div class="mt-2">
-                            <textarea class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
+                            <textarea class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-sky-500 sm:text-sm sm:leading-6"
                                       id="prompt" name="prompt" rows="4" wire:model.live.debounce='prompt'></textarea>
                         </div>
                         <p class="mt-2 text-xs leading-5 text-gray-400">生图的文本描述，仅支持中文、日常标点符号。不支持英文、特殊符号，限制 200 字。</p>
                     </div>
                     <div class="flex items-center justify-end">
-                        <button class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                        <button class="rounded-md bg-sky-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-sky-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-600"
                                 type="submit">开始绘画</button>
                     </div>
                 </div>
@@ -90,9 +91,11 @@
                             <span class="text-xs font-medium text-slate-400">{{ $task->created_at }}</span>
                         </div>
 
-                        <p class="mt-1 text-gray-100">{{ $task->prompt }}<span class="text-sm text-gray-300"> - @user</span></p>
-
-
+                        <p class="mt-1 max-w-4xl text-sm font-bold text-gray-100">
+                            <a class="border-b border-transparent text-sky-500 hover:border-b-sky-500" href="{{ $task->url }}"
+                               target="_blank">{{ $task->url }}</a>
+                            {{ $task->prompt }}<span class="text-gray-300"> - @user</span>
+                        </p>
 
                         @if ($task->result)
                             <a class="mt-2 inline-block overflow-hidden rounded-md bg-gray-800" href="{{ $task->result }}" target="_blank">
