@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Task;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 
 class Home extends Component
@@ -77,8 +78,15 @@ class Home extends Component
             }
 
             if ($response->json()['data']['task_status'] == 'SUCCESS') {
+                $originImg = $response->json()['data']['sub_task_result_list'][0]['final_image_list'][0]['img_url'];
+
+                // 转存到七牛云
+                $disk = Storage::disk('qiniu');
+                $savedResponse = $disk->getAdapter()->getBucketManager()->fetch($originImg, $disk->getAdapter()->getBucket());
+                $savedImage = $disk->getAdapter()->getUrl($savedResponse[0]['key']);
+
                 Task::where('task_id', $task_id)->update([
-                    'result' => $response->json()['data']['sub_task_result_list'][0]['final_image_list'][0]['img_url'],
+                    'result' => $savedImage,
                 ]);
             }
 

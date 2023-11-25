@@ -56,6 +56,14 @@ return [
             'throw' => false,
         ],
 
+        'qiniu' => [
+            'driver' => 'qiniu',
+            'access_key' => env('QINIU_ACCESS_KEY', 'AyiCghjf6sgB10PLyjqbyGaoU8TCPgZpDEpvVHD0'),
+            'secret_key' => env('QINIU_SECRET_KEY', 'pWwYRBc8Msy0nk1Weq-uaxpTyWKabknkpWO0IGhZ'),
+            'bucket' => env('QINIU_BUCKET', 'ledo-teaching'),
+            'domain' => env('QINIU_DOMAIN', 'ledoteaching.cdn.pinweb.io'), // or host: https://xxxx.clouddn.com
+        ],
+
     ],
 
     /*
