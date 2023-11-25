@@ -11,6 +11,8 @@ class Home extends Component
 {
     public $prompt = '';
 
+    public $size = '1024 x 1024';
+
     public $width = 1024;
 
     public $height = 1024;
@@ -18,6 +20,14 @@ class Home extends Component
     public $url = '';
 
     public $change_degree = 1;
+
+    public function sizeChanged()
+    {
+        $size = explode(' x ', $this->size);
+
+        $this->width = intval($size[0]);
+        $this->height = intval($size[1]);
+    }
 
     public function save()
     {

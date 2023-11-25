@@ -14,7 +14,7 @@
                         <label class="block text-sm font-medium leading-6 text-white" for="country">图片尺寸</label>
                         <div class="mt-2">
                             <select class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6 [&_*]:text-black"
-                                    id="size" name="size">
+                                    id="size" name="size" wire:model.live='size' wire:change='sizeChanged'>
                                 <option>512 x 512</option>
                                 <option>640 x 360</option>
                                 <option>360 x 640</option>
@@ -59,14 +59,16 @@
         </div>
     </div>
 
-    <div class="sticky top-0 z-40 flex items-center gap-x-6 bg-white px-4 py-4 shadow-sm sm:px-6 lg:hidden">
-        <button class="-m-2.5 p-2.5 text-slate-700 lg:hidden" type="button">
+    <div class="sticky top-0 z-40 flex items-center gap-x-6 bg-gray-800 px-4 py-4 shadow-sm sm:px-6 lg:hidden">
+        <button class="-m-2.5 p-2.5 text-gray-200 lg:hidden" type="button">
             <span class="sr-only">Open sidebar</span>
             <svg class="h-6 w-6" aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
             </svg>
         </button>
-        <div class="flex-1 text-sm font-semibold leading-6 text-slate-900">Dashboard</div>
+        <div class="flex flex-1 gap-3 text-sm font-semibold leading-6 text-gray-200">
+            Dali AI Art
+        </div>
         <a href="#">
             <span class="sr-only">Your profile</span>
             <img class="h-8 w-8 rounded-full bg-slate-50"
@@ -93,8 +95,8 @@
 
 
                         @if ($task->result)
-                            <a class="inline-block" href="{{ $task->result }}" target="_blank">
-                                <img class="mt-2 aspect-square h-80 rounded-md" src="{{ $task->result }}">
+                            <a class="mt-2 inline-block overflow-hidden rounded-md bg-gray-800" href="{{ $task->result }}" target="_blank">
+                                <img class="h-80 w-80 object-contain" src="{{ $task->result }}">
                             </a>
                         @else
                             <div class="mt-2 flex aspect-square h-80 items-center justify-center rounded-md bg-gray-600"
