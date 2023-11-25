@@ -88,7 +88,7 @@
                             <span class="text-xs font-medium text-slate-400">{{ $task->created_at }}</span>
                         </div>
 
-                        <p class="mt-1 text-gray-100">{{ $task->prompt }}<span class="text-sm text-gray-300"> - @atan</span></p>
+                        <p class="mt-1 text-gray-100">{{ $task->prompt }}<span class="text-sm text-gray-300"> - @user</span></p>
 
 
 
