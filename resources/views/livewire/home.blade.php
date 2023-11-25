@@ -93,7 +93,7 @@
 
 
                         @if ($task->result)
-                            <a href="{{ $task->result }}" target="_blank">
+                            <a class="inline-block" href="{{ $task->result }}" target="_blank">
                                 <img class="mt-2 aspect-square h-80 rounded-md" src="{{ $task->result }}">
                             </a>
                         @else
