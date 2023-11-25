@@ -37,9 +37,19 @@
                     <div class="">
                         <label class="block text-sm font-medium leading-6 text-white" for="email">参考图影响因子</label>
                         <div class="mt-2">
-                            <input class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-sky-500 sm:text-sm sm:leading-6"
-                                   id="change_degree" name="change_degree" type="text" wire:model.number.live='change_degree'
-                                   placeholder="支持 1-10 内，数值越大参考图影响越大">
+                            <select class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-sky-500 sm:text-sm sm:leading-6 [&_*]:text-black"
+                                    id="size" name="size" wire:model.number.live='change_degree'>
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                                <option>6</option>
+                                <option>7</option>
+                                <option>8</option>
+                                <option>9</option>
+                                <option>10</option>
+                            </select>
                         </div>
                         <p class="mt-2 text-xs leading-5 text-gray-400">数字 1-10，数值越大参考图影响越大。</p>
                     </div>
