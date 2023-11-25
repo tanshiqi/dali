@@ -99,7 +99,7 @@
                                 <img class="h-80 w-80 object-contain" src="{{ $task->result }}">
                             </a>
                         @else
-                            <div class="mt-2 flex aspect-square h-80 items-center justify-center rounded-md bg-gray-600"
+                            <div class="mt-2 flex aspect-square h-80 items-center justify-center rounded-md bg-gray-800"
                                  wire:poll.5s='getResult("{{ $task->task_id }}")'>
                                 <img class="h-12 w-12" src="/img/spin.gif">
                             </div>
