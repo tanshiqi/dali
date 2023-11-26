@@ -1,19 +1,18 @@
 <div>
-    <div class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-96 lg:flex-col">
-        <!-- Sidebar component, swap this element with another sidebar if you like -->
-        <div class="flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-900 bg-gray-800 px-6">
-            <div class="flex h-16 shrink-0 items-center text-gray-100">
+    <div class="fixed inset-x-0 bottom-0 lg:inset-y-0 lg:z-50 lg:flex lg:w-96 lg:flex-col">
+        <div class="flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-900 bg-gray-800 px-4 py-4 lg:px-6 lg:py-0">
+            <div class="hidden h-16 shrink-0 items-center text-gray-100 lg:flex">
                 <svg class="h-8" aria-hidden="true" viewBox="0 0 32 32" stroke="currentColor" stroke-width="1.5" fill="none">
                     <path id="b"
                           d="M3.25 26v.75H7c1.305 0 2.384-.21 3.346-.627.96-.415 1.763-1.02 2.536-1.752.695-.657 1.39-1.443 2.152-2.306l.233-.263c.864-.975 1.843-2.068 3.071-3.266 1.209-1.18 2.881-1.786 4.621-1.786h5.791V5.25H25c-1.305 0-2.384.21-3.346.627-.96.415-1.763 1.02-2.536 1.751-.695.658-1.39 1.444-2.152 2.307l-.233.263c-.864.975-1.843 2.068-3.071 3.266-1.209 1.18-2.881 1.786-4.621 1.786H3.25V26Z" />
                 </svg>
             </div>
             <form wire:submit.prevent="save">
-                <div class="space-y-8">
-                    <div class="">
-                        <label class="block text-sm font-medium leading-6 text-white" for="country">图片尺寸</label>
-                        <div class="mt-2">
-                            <select class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-sky-500 sm:text-sm sm:leading-6 [&_*]:text-black"
+                <div class="grid grid-cols-5 gap-x-3 gap-y-4 lg:gap-y-8">
+                    <div class="col-span-2 lg:col-span-5">
+                        <label class="mb-2 hidden text-sm font-medium leading-6 text-white lg:block" for="size">图片尺寸</label>
+                        <div>
+                            <select class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-sm text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-sky-500 sm:leading-6 [&_*]:text-black"
                                     id="size" name="size" wire:model.live='size' wire:change='sizeChanged'>
                                 <option>512 x 512</option>
                                 <option>640 x 360</option>
@@ -27,42 +26,41 @@
                             </select>
                         </div>
                     </div>
-                    <div class="">
-                        <label class="block text-sm font-medium leading-6 text-white" for="email">参考图 URL</label>
-                        <div class="mt-2">
-                            <input class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-sky-500 sm:text-sm sm:leading-6"
-                                   id="url" name="url" type="url" wire:model.live.debounce='url'>
+                    <div class="col-span-3 lg:col-span-5">
+                        <label class="mb-2 hidden text-sm font-medium leading-6 text-white lg:block" for="url">参考图 URL / 影响因子</label>
+                        <div class="relative rounded-md shadow-sm">
+                            <input class="block w-full rounded-md border-0 bg-white/5 py-1.5 pr-16 text-sm text-white ring-1 ring-inset ring-white/10 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-500 sm:leading-6 [&_*]:text-black"
+                                   id="url" name="url" type="text" wire:model.live.debounce='url' placeholder="参考图的完整 URL">
+                            <div class="absolute inset-y-0 right-0 flex items-center">
+                                <label class="sr-only" for="degree">参考图影响因子</label>
+                                <select class="h-full rounded-md border-0 bg-transparent py-0 pl-2 pr-7 text-sm text-white focus:ring-2 focus:ring-inset focus:ring-sky-600 [&_*]:text-black"
+                                        id="degree" name="degree" wire:model.number.live='change_degree'>
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option>5</option>
+                                    <option>6</option>
+                                    <option>7</option>
+                                    <option>8</option>
+                                    <option>9</option>
+                                    <option>10</option>
+                                </select>
+                            </div>
                         </div>
+                        <p class="mt-2 hidden text-xs leading-5 text-gray-400 lg:block">数字 1-10，数值越大参考图影响越大。</p>
                     </div>
-                    <div class="">
-                        <label class="block text-sm font-medium leading-6 text-white" for="email">参考图影响因子</label>
-                        <div class="mt-2">
-                            <select class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-sky-500 sm:text-sm sm:leading-6 [&_*]:text-black"
-                                    id="size" name="size" wire:model.number.live='change_degree'>
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
-                                <option>6</option>
-                                <option>7</option>
-                                <option>8</option>
-                                <option>9</option>
-                                <option>10</option>
-                            </select>
+
+                    <div class="col-span-5">
+                        <label class="mb-2 hidden text-sm font-medium leading-6 text-white lg:block" for="prompt">Prompt</label>
+                        <div>
+                            <textarea class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-sm text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-sky-500 sm:leading-6"
+                                      id="prompt" name="prompt" rows="3" wire:model.live.debounce='prompt' placeholder="生图的文本描述，仅支持中文、日常标点符号"></textarea>
                         </div>
-                        <p class="mt-2 text-xs leading-5 text-gray-400">数字 1-10，数值越大参考图影响越大。</p>
+                        <p class="mt-2 hidden text-xs leading-5 text-gray-400 lg:block">生图的文本描述，仅支持中文、日常标点符号。不支持英文、特殊符号，限制 200 字。</p>
                     </div>
-                    <div class="">
-                        <label class="block text-sm font-medium leading-6 text-white" for="about">Prompt</label>
-                        <div class="mt-2">
-                            <textarea class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-sky-500 sm:text-sm sm:leading-6"
-                                      id="prompt" name="prompt" rows="4" wire:model.live.debounce='prompt'></textarea>
-                        </div>
-                        <p class="mt-2 text-xs leading-5 text-gray-400">生图的文本描述，仅支持中文、日常标点符号。不支持英文、特殊符号，限制 200 字。</p>
-                    </div>
-                    <div class="flex items-center justify-end">
-                        <button class="rounded-md bg-sky-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-sky-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-600"
+                    <div class="col-span-5 flex items-center justify-end">
+                        <button class="w-full rounded-md bg-sky-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-sky-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-600 lg:w-auto"
                                 type="submit">开始绘画</button>
                     </div>
                 </div>
@@ -88,7 +86,7 @@
         </a>
     </div>
 
-    <main class="py-10 lg:pl-96">
+    <main class="pb-64 pt-6 lg:pb-10 lg:pl-96 lg:pt-10">
         <div class="space-y-12 px-4 sm:px-6 lg:px-8">
             @foreach ($tasks as $task)
                 <div class="flex" wire:key="task-{{ $task->id }}">
@@ -108,11 +106,11 @@
                         </p>
 
                         @if ($task->result)
-                            <a class="mt-2 inline-block overflow-hidden rounded-md bg-gray-800" href="{{ $task->result }}" target="_blank">
-                                <img class="h-80 w-80 object-contain" src="{{ $task->result }}">
+                            <a class="mt-2 inline-block overflow-hidden rounded-md bg-gray-800/70" href="{{ $task->result }}" target="_blank">
+                                <img class="h-64 w-64 object-contain lg:h-80 lg:w-80" src="{{ $task->result }}">
                             </a>
                         @else
-                            <div class="mt-2 flex aspect-square h-80 items-center justify-center rounded-md bg-gray-800"
+                            <div class="mt-2 flex h-64 w-64 items-center justify-center rounded-md bg-gray-800 lg:h-80 lg:w-80"
                                  wire:poll.5s='getResult("{{ $task->task_id }}")'>
                                 <img class="h-12 w-12" src="/img/spin.gif">
                             </div>
