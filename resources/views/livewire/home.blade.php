@@ -54,7 +54,7 @@
                     <div class="col-span-5">
                         <label class="mb-2 hidden text-sm font-medium leading-6 text-white lg:block" for="prompt">Prompt</label>
                         <div>
-                            <textarea class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-sm text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-sky-500 sm:leading-6"
+                            <textarea class="block w-full resize-none rounded-md border-0 bg-white/5 py-1.5 text-sm text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-sky-500 sm:leading-6"
                                       id="prompt" name="prompt" rows="4" wire:model.live.debounce='prompt' placeholder="生图的文本描述，仅支持中文、日常标点符号" autocomplete="off"></textarea>
                         </div>
                         <p class="mt-2 hidden text-xs leading-5 text-gray-400 lg:block">生图的文本描述，仅支持中文、日常标点符号。不支持英文、特殊符号，限制 200 字。</p>
