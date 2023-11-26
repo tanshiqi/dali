@@ -60,8 +60,8 @@
                         <p class="mt-2 hidden text-xs leading-5 text-gray-400 lg:block">生图的文本描述，仅支持中文、日常标点符号。不支持英文、特殊符号，限制 200 字。</p>
                     </div>
                     <div class="col-span-5 flex items-center justify-end">
-                        <button class="w-full rounded-md bg-sky-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-sky-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-600 lg:w-auto"
-                                type="submit">开始绘画</button>
+                        <button class="w-full rounded-md bg-sky-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-sky-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-600 disabled:cursor-not-allowed disabled:bg-gray-700 disabled:text-gray-500 lg:w-auto"
+                                type="submit" {{ empty($prompt) ? 'disabled' : '' }} wire:loading.attr="disabled" wire:target="remove">开始绘画</button>
                     </div>
                 </div>
             </form>

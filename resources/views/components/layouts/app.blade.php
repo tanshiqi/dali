@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="h-full bg-gray-700 font-sans antialiased" lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html class="h-full bg-gray-700 font-sans antialiased" lang="zh-cmn-Hans">
 
 <head>
     <meta charset="utf-8">
