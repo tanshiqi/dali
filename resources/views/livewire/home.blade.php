@@ -30,7 +30,7 @@
                         <label class="mb-2 hidden text-sm font-medium leading-6 text-white lg:block" for="url">参考图 URL / 影响因子</label>
                         <div class="relative rounded-md shadow-sm">
                             <input class="block w-full rounded-md border-0 bg-white/5 py-1.5 pr-16 text-sm text-white ring-1 ring-inset ring-white/10 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-500 sm:leading-6 [&_*]:text-black"
-                                   id="url" name="url" type="text" wire:model.live.debounce='url' placeholder="参考图的完整 URL">
+                                   id="url" name="url" type="text" wire:model.live.debounce='url' placeholder="参考图的完整 URL" autocomplete="off">
                             <div class="absolute inset-y-0 right-0 flex items-center">
                                 <label class="sr-only" for="degree">参考图影响因子</label>
                                 <select class="h-full rounded-md border-0 bg-transparent py-0 pl-2 pr-7 text-sm text-white focus:ring-2 focus:ring-inset focus:ring-sky-600 [&_*]:text-black"
@@ -55,7 +55,7 @@
                         <label class="mb-2 hidden text-sm font-medium leading-6 text-white lg:block" for="prompt">Prompt</label>
                         <div>
                             <textarea class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-sm text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-sky-500 sm:leading-6"
-                                      id="prompt" name="prompt" rows="4" wire:model.live.debounce='prompt' placeholder="生图的文本描述，仅支持中文、日常标点符号"></textarea>
+                                      id="prompt" name="prompt" rows="4" wire:model.live.debounce='prompt' placeholder="生图的文本描述，仅支持中文、日常标点符号" autocomplete="off"></textarea>
                         </div>
                         <p class="mt-2 hidden text-xs leading-5 text-gray-400 lg:block">生图的文本描述，仅支持中文、日常标点符号。不支持英文、特殊符号，限制 200 字。</p>
                     </div>
