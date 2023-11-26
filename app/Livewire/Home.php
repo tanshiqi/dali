@@ -85,7 +85,7 @@ class Home extends Component
         if ($response->ok()) {
             if ($response->json()['data']['task_status'] == 'FAILED') {
                 Task::where('task_id', $task_id)->update([
-                    'result' => 'http://ledoteaching.cdn.pinweb.io/dali/20231125_wAatdB.png',
+                    'result' => 'http://ledoteaching.cdn.pinweb.io/dali/20231126_9qDtzR.png',
                 ]);
             }
 
