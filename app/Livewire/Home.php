@@ -6,9 +6,12 @@ use App\Models\Task;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class Home extends Component
 {
+    use WithFileUploads;
+
     public $prompt = '';
 
     public $size = '1024 x 1024';
@@ -19,7 +22,21 @@ class Home extends Component
 
     public $url = '';
 
+    public $photo;
+
     public $change_degree = 1;
+
+    public $tools = false;
+
+    public function updatedPhoto()
+    {
+        $this->validate([
+            'photo' => 'image|max:20480',
+        ]);
+        $path = $this->photo->store('ref', 's3');
+        $this->tools = true;
+        $this->url = Storage::disk('qiniu')->url($path);
+    }
 
     public function sizeChanged()
     {
