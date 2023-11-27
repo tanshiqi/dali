@@ -158,7 +158,6 @@ return [
 
     'exclude_files' => [
         // 'my_secret.log'
-        'laravel.log',
     ],
 
     /*
