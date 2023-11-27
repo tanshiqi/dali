@@ -71,6 +71,11 @@ class Home extends Component
         if ($response->ok()) {
             if (array_key_exists('error_code', $response->json())) {
                 $err_task_id = 'err_'.time();
+                logger()->error([
+                    'prompt' => $prompt,
+                    'task_id' => $err_task_id,
+                    'response' => $response->json(),
+                ]);
                 $this->getFailed($err_task_id);
 
                 return $err_task_id;
