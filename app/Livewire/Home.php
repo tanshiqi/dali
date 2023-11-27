@@ -69,7 +69,14 @@ class Home extends Component
         $response = Http::post($url, $params);
 
         if ($response->ok()) {
-            return $response->json()['data']['task_id'];
+            if (array_key_exists('error_code', $response->json())) {
+                $err_task_id = 'err_'.time();
+                $this->getFailed($err_task_id);
+
+                return $err_task_id;
+            }
+
+            return data_get($response->json(), 'data.task_id');
         }
     }
 
