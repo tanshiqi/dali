@@ -1,4 +1,4 @@
-<div>
+<div x-data="{ prompt: '' }">
     <div
          class="{{ $tools ? 'translate-y-0' : 'translate-y-14' }} fixed inset-x-0 bottom-0 transform transition lg:inset-y-0 lg:z-50 lg:flex lg:w-96 lg:translate-y-0 lg:flex-col">
         <div class="fixed inset-x-0 top-0 flex h-4 items-center justify-center lg:hidden" wire:click="$set('tools', !$wire.tools)">
@@ -11,7 +11,7 @@
                           d="M3.25 26v.75H7c1.305 0 2.384-.21 3.346-.627.96-.415 1.763-1.02 2.536-1.752.695-.657 1.39-1.443 2.152-2.306l.233-.263c.864-.975 1.843-2.068 3.071-3.266 1.209-1.18 2.881-1.786 4.621-1.786h5.791V5.25H25c-1.305 0-2.384.21-3.346.627-.96.415-1.763 1.02-2.536 1.751-.695.658-1.39 1.444-2.152 2.307l-.233.263c-.864.975-1.843 2.068-3.071 3.266-1.209 1.18-2.881 1.786-4.621 1.786H3.25V26Z" />
                 </svg>
             </div>
-            <form wire:submit.prevent="save">
+            <form wire:submit="save">
                 <div class="grid grid-cols-5 gap-x-2 gap-y-3 lg:gap-x-3 lg:gap-y-8">
                     <div class="col-span-5 flex items-center gap-x-2 lg:hidden">
                         {{-- <div class="flex h-11 w-11 flex-shrink-0 cursor-pointer items-center justify-center rounded-full bg-gray-800 text-gray-300"
@@ -38,10 +38,10 @@
 
 
                         <input class="block w-full rounded-full border-0 bg-gray-800 py-2.5 pr-4 text-white ring-1 ring-inset ring-gray-900/50 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-500 lg:hidden [&_*]:text-black"
-                               name="prompt" type="text" wire:model.live.debounce='prompt' placeholder="提示词，仅支持中文及标点" autocomplete="off">
+                               name="prompt" type="text" wire:model='prompt' placeholder="提示词，仅支持中文及标点" autocomplete="off" x-model="prompt">
 
                         <button class="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full bg-sky-600 text-white shadow-sm hover:bg-sky-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-sky-500 disabled:cursor-not-allowed disabled:bg-gray-800 disabled:text-gray-600 lg:w-auto"
-                                type="submit" {{ empty($prompt) ? 'disabled' : '' }} wire:loading.attr="disabled" wire:target="save">
+                                type="submit" :disabled="prompt == ''" wire:loading.attr="disabled" wire:target="save">
                             <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
                                  wire:loading.remove wire:target="save">
                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -57,11 +57,11 @@
                         <div class="flex w-full items-center">
                             <div class="relative flex-auto rounded-md shadow-sm">
                                 <input class="block w-full rounded-full border-0 bg-gray-800 py-2.5 pr-16 text-white ring-1 ring-inset ring-gray-900/50 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-500 sm:leading-6 lg:rounded-md lg:bg-white/5 lg:py-1.5 lg:text-sm lg:ring-white/10 [&_*]:text-black"
-                                       id="url" name="url" type="text" wire:model.live.debounce='url' placeholder="参考图的完整 URL" autocomplete="off">
+                                       id="url" name="url" type="text" wire:model='url' placeholder="参考图的完整 URL" autocomplete="off">
                                 <div class="absolute inset-y-0 right-0 flex items-center">
                                     <label class="sr-only" for="degree">参考图影响因子</label>
                                     <select class="h-full rounded-md border-0 bg-transparent py-0 pl-2 pr-7 text-sm text-white focus:ring-2 focus:ring-inset focus:ring-sky-600 [&_*]:text-black"
-                                            id="degree" name="degree" wire:model.number.live='change_degree'>
+                                            id="degree" name="degree" wire:model.number='change_degree'>
                                         <option>1</option>
                                         <option>2</option>
                                         <option>3</option>
@@ -93,7 +93,7 @@
                                   class="text-orange-500">*</span></label>
                         <div>
                             <select class="block w-full rounded-full border-0 bg-gray-800 py-2.5 text-white shadow-sm ring-1 ring-inset ring-gray-900/50 focus:ring-2 focus:ring-inset focus:ring-sky-500 sm:leading-6 lg:rounded-md lg:bg-white/5 lg:py-1.5 lg:text-sm lg:ring-white/10 [&_*]:text-black"
-                                    id="size" name="size" wire:model.live='size' wire:change='sizeChanged'>
+                                    id="size" name="size" wire:model='size' wire:change='sizeChanged'>
                                 <option>512 x 512</option>
                                 <option>640 x 360</option>
                                 <option>360 x 640</option>
@@ -112,19 +112,22 @@
                                   class="text-orange-500">*</span></label>
                         <div>
                             <textarea class="w-full resize-none rounded-md border-0 bg-white/5 py-1.5 text-sm text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-sky-500 sm:leading-6"
-                                      id="prompt" name="prompt" rows="4" wire:model.live.debounce='prompt' placeholder="生图的文本描述，仅支持中文、日常标点符号" autocomplete="off"></textarea>
+                                      id="prompt" name="prompt" x-model="prompt" rows="4" wire:model='prompt' placeholder="生图的文本描述，仅支持中文、日常标点符号" autocomplete="off"></textarea>
                         </div>
                         <p class="mt-2 hidden text-xs leading-5 text-gray-400 lg:block">生图的文本描述，仅支持中文及日常标点符号。不支持英文、特殊符号，限制 200 字。</p>
                     </div>
 
 
+
+
                     <div class="col-span-5 hidden items-center justify-end lg:flex">
                         <button class="flex w-full items-center rounded-md bg-sky-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-sky-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-600 disabled:cursor-not-allowed disabled:bg-gray-700 disabled:text-gray-400 lg:w-auto"
-                                type="submit" {{ empty($prompt) ? 'disabled' : '' }} wire:loading.attr="disabled" wire:target="save">开始绘画
+                                type="submit" :disabled="prompt == ''" wire:loading.attr="disabled" wire:target="save">开始绘画
 
                             <img class="ml-1 h-4 w-4" src="/img/loading.svg" wire:loading wire:target="save">
                         </button>
                     </div>
+
                 </div>
             </form>
         </div>
