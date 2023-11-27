@@ -37,7 +37,7 @@
 
 
 
-                        <input class="block w-full rounded-full border-0 bg-gray-800 py-2.5 pr-4 text-white ring-1 ring-inset ring-gray-900/50 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-500 lg:hidden [&_*]:text-black"
+                        <input class="block w-full rounded-full border-0 bg-gray-800 px-4 py-2.5 text-white ring-1 ring-inset ring-gray-900/50 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-500 lg:hidden [&_*]:text-black"
                                name="prompt" type="text" wire:model='prompt' placeholder="提示词，仅支持中文及标点" autocomplete="off" x-model="prompt">
 
                         <button class="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full bg-sky-600 text-white shadow-sm hover:bg-sky-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-sky-500 disabled:cursor-not-allowed disabled:bg-gray-800 disabled:text-gray-600 lg:w-auto"
