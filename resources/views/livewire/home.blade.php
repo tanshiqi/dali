@@ -151,7 +151,7 @@
         </a>
     </div> --}}
 
-    <main class="pb-32 pt-6 lg:pb-10 lg:pl-96 lg:pt-10">
+    <main class="pb-48 pt-6 lg:pb-10 lg:pl-96 lg:pt-10">
         <div class="space-y-12 px-4 sm:px-6 lg:px-8">
             @foreach ($tasks as $task)
                 <div class="flex" wire:key="task-{{ $task->id }}">
