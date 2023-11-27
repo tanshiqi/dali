@@ -41,6 +41,8 @@ class Home extends Component
             'url' => $this->url,
             'change_degree' => $this->change_degree,
             'task_id' => $task_id,
+            // 如果是错误的任务，直接返回错误图片
+            'result' => str_starts_with($task_id, 'err_') ? 'http://ledoteaching.cdn.pinweb.io/dali/20231126_9qDtzR.png' : null,
         ]);
 
         return $task;
@@ -76,7 +78,6 @@ class Home extends Component
                     'task_id' => $err_task_id,
                     'response' => $response->json(),
                 ]);
-                $this->getFailed($err_task_id);
 
                 return $err_task_id;
             }
