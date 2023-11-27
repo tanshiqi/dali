@@ -172,7 +172,7 @@
 
                         @if ($task->result)
                             <a class="mt-2 inline-block overflow-hidden rounded-md bg-gray-800/70" href="{{ $task->result }}" target="_blank">
-                                <img class="h-64 w-64 object-contain lg:h-80 lg:w-80" src="{{ $task->result }}">
+                                <img class="h-64 w-64 object-contain lg:h-80 lg:w-80" src="{{ $task->result }}?imageView2/0/w/640/format/jpg">
                             </a>
                         @else
                             <div class="mt-2 flex h-64 w-64 items-center justify-center rounded-md bg-gray-800 lg:h-80 lg:w-80"
