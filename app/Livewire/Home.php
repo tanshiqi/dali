@@ -31,21 +31,7 @@ class Home extends Component
 
     public function save()
     {
-        $task_id = $this->sendTask($this->prompt, $this->width, $this->height, $this->change_degree, $this->url);
-
-        $task = Task::create([
-            'user_id' => 1,
-            'prompt' => $this->prompt,
-            'width' => $this->width,
-            'height' => $this->height,
-            'url' => $this->url,
-            'change_degree' => $this->change_degree,
-            'task_id' => $task_id,
-            // 如果是错误的任务，直接返回错误图片
-            'result' => str_starts_with($task_id, 'err_') ? 'http://ledoteaching.cdn.pinweb.io/dali/20231126_9qDtzR.png' : null,
-        ]);
-
-        return $task;
+        return $this->sendTask($this->prompt, $this->width, $this->height, $this->change_degree, $this->url);
     }
 
     public function render()
@@ -72,17 +58,31 @@ class Home extends Component
 
         if ($response->ok()) {
             if (array_key_exists('error_code', $response->json())) {
+                // 写入错误信息
                 $err_task_id = 'err_'.time();
                 logger()->error([
                     'prompt' => $prompt,
                     'task_id' => $err_task_id,
                     'response' => $response->json(),
                 ]);
-
-                return $err_task_id;
+                $task_id = $err_task_id;
+            } else {
+                $task_id = data_get($response->json(), 'data.task_id');
             }
 
-            return data_get($response->json(), 'data.task_id');
+            Task::create([
+                'user_id' => 1,
+                'prompt' => $prompt,
+                'width' => $width,
+                'height' => $height,
+                'url' => $reference,
+                'change_degree' => $change_degree,
+                'task_id' => $task_id,
+                'result' => str_starts_with($task_id, 'err_') ? 'http://ledoteaching.cdn.pinweb.io/dali/20231126_9qDtzR.png' : null,
+                'error' => str_starts_with($task_id, 'err_') ? data_get($response->json(), 'error_msg') : null,
+            ]);
+
+            return $task_id;
         }
     }
 
@@ -101,7 +101,7 @@ class Home extends Component
                     'task_id' => $task_id,
                     'response' => $response->json(),
                 ]);
-                $this->getFailed($task_id);
+                $this->getFailed($task_id, data_get($response->json(), 'data.sub_task_result_list.0.sub_task_error_code'));
             }
 
             if (data_get($response->json(), 'data.task_status') == 'SUCCESS') {
@@ -122,11 +122,12 @@ class Home extends Component
 
     }
 
-    protected function getFailed($task_id)
+    protected function getFailed($task_id, $error = null)
     {
         // 写入错误图片
         Task::where('task_id', $task_id)->update([
             'result' => 'http://ledoteaching.cdn.pinweb.io/dali/20231126_9qDtzR.png',
+            'error' => $error,
         ]);
     }
 }
