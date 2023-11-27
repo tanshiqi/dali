@@ -83,14 +83,16 @@ class Home extends Component
         $response = Http::post($url, $params);
 
         if ($response->ok()) {
-            if ($response->json()['data']['task_status'] == 'FAILED') {
-                Task::where('task_id', $task_id)->update([
-                    'result' => 'http://ledoteaching.cdn.pinweb.io/dali/20231126_9qDtzR.png',
+            if (array_key_exists('error_code', $response->json()) || data_get($response->json(), 'data.task_status') == 'FAILED') {
+                logger()->error([
+                    'task_id' => $task_id,
+                    'response' => $response->json(),
                 ]);
+                $this->getFailed($task_id);
             }
 
-            if ($response->json()['data']['task_status'] == 'SUCCESS') {
-                $originImg = $response->json()['data']['sub_task_result_list'][0]['final_image_list'][0]['img_url'];
+            if (data_get($response->json(), 'data.task_status') == 'SUCCESS') {
+                $originImg = data_get($response->json(), 'data.sub_task_result_list.0.final_image_list.0.img_url');
 
                 // 转存到七牛云
                 $disk = Storage::disk('qiniu');
@@ -102,7 +104,16 @@ class Home extends Component
                 ]);
             }
 
+            return;
         }
 
+    }
+
+    protected function getFailed($task_id)
+    {
+        // 写入错误图片
+        Task::where('task_id', $task_id)->update([
+            'result' => 'http://ledoteaching.cdn.pinweb.io/dali/20231126_9qDtzR.png',
+        ]);
     }
 }
