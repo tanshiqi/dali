@@ -14,14 +14,6 @@
             <form wire:submit="save">
                 <div class="grid grid-cols-5 gap-x-2 gap-y-3 lg:gap-x-3 lg:gap-y-8">
                     <div class="col-span-5 flex items-center gap-x-2 lg:hidden">
-                        {{-- <div class="flex h-11 w-11 flex-shrink-0 cursor-pointer items-center justify-center rounded-full bg-gray-800 text-gray-300"
-                             wire:click="$set('tools', !$wire.tools)">
-                            <svg class="{{ $tools ? 'rotate-45 text-sky-500' : 'rotate-0' }} h-5 w-5 transition" xmlns="http://www.w3.org/2000/svg"
-                                 fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                            </svg>
-                        </div> --}}
-
                         <label class="flex h-11 w-11 flex-shrink-0 cursor-pointer items-center justify-center rounded-full bg-gray-800 text-gray-300"
                                for="photo">
                             <svg class="h-5 w-5" wire:loading.remove wire:target="photo" xmlns="http://www.w3.org/2000/svg" width="44" height="44"
@@ -156,7 +148,7 @@
             @foreach ($tasks as $task)
                 <div class="flex" wire:key="task-{{ $task->id }}">
                     <div class="mr-4 flex-shrink-0">
-                        <img class="w-10" src="http://ledoteaching.cdn.pinweb.io/20231125_s6ogPH.png">
+                        <img class="w-10" src="/img/bot.png">
                     </div>
                     <div class="flex-auto">
                         <div class="flex items-center gap-2">
@@ -171,8 +163,10 @@
                         </p>
 
                         @if ($task->result)
-                            <a class="mt-2 inline-block overflow-hidden rounded-md bg-gray-800/70" href="{{ $task->result }}" target="_blank">
-                                <img class="h-64 w-64 object-contain lg:h-80 lg:w-80" src="{{ $task->result }}?imageView2/0/w/640/format/jpg">
+                            <a class="mt-2 inline-block overflow-hidden rounded-md bg-gray-800/70" href="{{ Storage::disk('qiniu')->url($task->result) }}"
+                               target="_blank">
+                                <img class="h-64 w-64 object-contain lg:h-80 lg:w-80"
+                                     src="{{ Storage::disk('qiniu')->url($task->result) }}?imageView2/0/w/640/format/jpg">
                             </a>
                         @else
                             <div class="mt-2 flex h-64 w-64 items-center justify-center rounded-md bg-gray-800 lg:h-80 lg:w-80"

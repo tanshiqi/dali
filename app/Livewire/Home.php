@@ -95,7 +95,7 @@ class Home extends Component
                 'url' => $reference,
                 'change_degree' => $change_degree,
                 'task_id' => $task_id,
-                'result' => str_starts_with($task_id, 'err_') ? 'http://ledoteaching.cdn.pinweb.io/dali/20231126_9qDtzR.png' : null,
+                'result' => str_starts_with($task_id, 'err_') ? 'dali/20231126_9qDtzR.png' : null,
                 'error' => str_starts_with($task_id, 'err_') ? data_get($response->json(), 'error_msg') : null,
             ]);
 
@@ -127,7 +127,7 @@ class Home extends Component
                 // 转存到七牛云
                 $disk = Storage::disk('qiniu');
                 $savedResponse = $disk->getAdapter()->getBucketManager()->fetch($originImg, $disk->getAdapter()->getBucket());
-                $savedImage = $disk->getAdapter()->getUrl($savedResponse[0]['key']);
+                $savedImage = $savedResponse[0]['key'];
 
                 Task::where('task_id', $task_id)->update([
                     'result' => $savedImage,
@@ -143,7 +143,7 @@ class Home extends Component
     {
         // 写入错误图片
         Task::where('task_id', $task_id)->update([
-            'result' => 'http://ledoteaching.cdn.pinweb.io/dali/20231126_9qDtzR.png',
+            'result' => 'dali/20231126_9qDtzR.png',
             'error' => $error,
         ]);
     }
