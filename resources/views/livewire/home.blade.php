@@ -1,10 +1,10 @@
-<div x-data="{ prompt: '' }">
-    <div
-         class="{{ $tools ? 'translate-y-0' : 'translate-y-14' }} fixed inset-x-0 bottom-0 transform transition lg:inset-y-0 lg:z-50 lg:flex lg:w-96 lg:translate-y-0 lg:flex-col">
-        <div class="fixed inset-x-0 top-0 flex h-4 items-center justify-center lg:hidden" wire:click="$set('tools', !$wire.tools)">
+<div x-data="{ prompt: @entangle('prompt'), tools: false }" x-on:visible = "tools = true">
+    <div class="fixed inset-x-0 bottom-0 transform transition lg:inset-y-0 lg:z-50 lg:flex lg:w-96 lg:translate-y-0 lg:flex-col" x-cloak
+         :class="tools ? 'translate-y-0' : 'translate-y-14'">
+        <div class="absolute inset-x-0 top-0 flex h-4 items-center justify-center lg:hidden" x-on:click="tools=!tools">
             <div class="h-1.5 w-12 rounded-full bg-white/10"></div>
         </div>
-        <div class="flex grow flex-col gap-y-5 overflow-y-auto border border-gray-800 bg-[#2e3744] px-4 pb-3 pt-5 lg:bg-gray-800 lg:px-6 lg:py-0">
+        <div class="flex grow flex-col gap-y-5 overflow-y-auto border border-gray-800 bg-[#2f3543] px-4 pb-3 pt-5 lg:bg-gray-800 lg:px-6 lg:py-0">
             <div class="hidden h-16 shrink-0 items-center text-gray-100 lg:flex">
                 <svg class="h-8" aria-hidden="true" viewBox="0 0 32 32" stroke="currentColor" stroke-width="1.5" fill="none">
                     <path id="b"
@@ -30,7 +30,7 @@
 
 
                         <input class="block w-full rounded-full border-0 bg-gray-800 px-4 py-2.5 text-white ring-1 ring-inset ring-gray-900/50 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-500 lg:hidden [&_*]:text-black"
-                               name="prompt" type="text" wire:model='prompt' placeholder="提示词，仅支持中文及标点" autocomplete="off" x-model="prompt">
+                               name="prompt" type="text" wire:model='prompt' placeholder="提示词，仅支持中文及标点" autocomplete="off">
 
                         <button class="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full bg-sky-600 text-white shadow-sm hover:bg-sky-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-sky-500 disabled:cursor-not-allowed disabled:bg-gray-800 disabled:text-gray-600 lg:w-auto"
                                 type="submit" :disabled="prompt == ''" wire:loading.attr="disabled" wire:target="save">
@@ -104,7 +104,7 @@
                                   class="text-orange-500">*</span></label>
                         <div>
                             <textarea class="w-full resize-none rounded-md border-0 bg-white/5 py-1.5 text-sm text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-sky-500 sm:leading-6"
-                                      id="prompt" name="prompt" x-model="prompt" rows="4" wire:model='prompt' placeholder="生图的文本描述，仅支持中文、日常标点符号" autocomplete="off"></textarea>
+                                      id="prompt" name="prompt" rows="4" wire:model='prompt' placeholder="生图的文本描述，仅支持中文、日常标点符号" autocomplete="off"></textarea>
                         </div>
                         <p class="mt-2 hidden text-xs leading-5 text-gray-400 lg:block">生图的文本描述，仅支持中文及日常标点符号。不支持英文、特殊符号，限制 200 字。</p>
                     </div>
@@ -125,23 +125,19 @@
         </div>
     </div>
 
-    {{-- <div class="sticky top-0 z-40 flex items-center gap-x-6 bg-gray-800 px-4 py-4 shadow-sm sm:px-6 lg:hidden">
+    <div class="sticky top-0 z-40 flex items-center gap-x-6 border-b border-gray-800 bg-[#2f3543] px-4 py-3 sm:px-6 lg:hidden">
+        <div class="flex flex-1 items-center gap-3 text-sm font-semibold leading-6 text-gray-200">
+            <svg class="h-7" aria-hidden="true" viewBox="0 0 32 32" stroke="currentColor" stroke-width="1.5" fill="none">
+                <path id="b"
+                      d="M3.25 26v.75H7c1.305 0 2.384-.21 3.346-.627.96-.415 1.763-1.02 2.536-1.752.695-.657 1.39-1.443 2.152-2.306l.233-.263c.864-.975 1.843-2.068 3.071-3.266 1.209-1.18 2.881-1.786 4.621-1.786h5.791V5.25H25c-1.305 0-2.384.21-3.346.627-.96.415-1.763 1.02-2.536 1.751-.695.658-1.39 1.444-2.152 2.307l-.233.263c-.864.975-1.843 2.068-3.071 3.266-1.209 1.18-2.881 1.786-4.621 1.786H3.25V26Z" />
+            </svg>Dali AI
+        </div>
         <button class="-m-2.5 p-2.5 text-gray-200 lg:hidden" type="button">
-            <span class="sr-only">Open sidebar</span>
             <svg class="h-6 w-6" aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
             </svg>
         </button>
-        <div class="flex flex-1 gap-3 text-sm font-semibold leading-6 text-gray-200">
-            Dali AI Art
-        </div>
-        <a href="#">
-            <span class="sr-only">Your profile</span>
-            <img class="h-8 w-8 rounded-full bg-slate-50"
-                 src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                 alt="">
-        </a>
-    </div> --}}
+    </div>
 
     <main class="pb-48 pt-6 lg:pb-10 lg:pl-96 lg:pt-10">
         <div class="space-y-12 px-4 sm:px-6 lg:px-8">

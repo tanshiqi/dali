@@ -26,16 +26,14 @@ class Home extends Component
 
     public $change_degree = 1;
 
-    public $tools = false;
-
     public function updatedPhoto()
     {
         $this->validate([
             'photo' => 'image|max:20480',
         ]);
         $path = $this->photo->store('ref', 's3');
-        $this->tools = true;
         $this->url = Storage::disk('qiniu')->url($path);
+        $this->dispatch('visible', true);
     }
 
     public function sizeChanged()
