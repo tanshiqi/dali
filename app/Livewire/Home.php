@@ -28,11 +28,11 @@ class Home extends Component
 
     public function updatedPhoto()
     {
-        $this->validate([
-            'photo' => 'image|max:20480',
-        ]);
-        $path = $this->photo->store('ref', 's3');
-        $this->url = Storage::disk('qiniu')->url($path);
+        // 生成一个唯一的、随机的名字
+        $hash = 'ref/'.$this->photo->hashName();
+        // 从tmp文件夹移动到ref文件夹，用move代替store，速度更快，因为已经在远程的网盘里了
+        Storage::disk('qiniu')->move($this->photo->path(), $hash);
+        $this->url = Storage::disk('qiniu')->url($hash);
         $this->dispatch('visible', true);
     }
 
