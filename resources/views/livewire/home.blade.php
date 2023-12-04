@@ -153,8 +153,10 @@
                         </div>
 
                         <p class="mt-1 max-w-4xl break-all text-sm font-bold text-gray-100">
-                            <a class="border-b border-transparent text-sky-500 hover:border-b-sky-500" href="{{ $task->url }}"
-                               target="_blank">{{ basename($task->url) }}</a>
+                            @if ($task->url)
+                                <a class="border-b border-transparent text-sky-500 hover:border-b-sky-500" href="{{ $task->url }}"
+                                   target="_blank">{{ substr(md5($task->url), 0, 7) }}</a>
+                            @endif
                             {{ $task->prompt }}<span class="font-normal text-gray-300"> - @user ({{ $task->task_id }})</span>
                         </p>
 
