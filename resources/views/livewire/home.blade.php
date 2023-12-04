@@ -154,7 +154,7 @@
 
                         <p class="mt-1 max-w-4xl break-all text-sm font-bold text-gray-100">
                             <a class="border-b border-transparent text-sky-500 hover:border-b-sky-500" href="{{ $task->url }}"
-                               target="_blank">{{ $task->url }}</a>
+                               target="_blank">{{ basename($task->url) }}</a>
                             {{ $task->prompt }}<span class="font-normal text-gray-300"> - @user ({{ $task->task_id }})</span>
                         </p>
 
