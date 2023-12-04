@@ -26,6 +26,8 @@ class Home extends Component
 
     public $change_degree = 1;
 
+    public $amount = 5;
+
     public function updatedPhoto()
     {
         // 生成一个唯一的、随机的名字
@@ -49,9 +51,14 @@ class Home extends Component
         return $this->sendTask($this->prompt, $this->width, $this->height, $this->change_degree, $this->url);
     }
 
+    public function loadmore()
+    {
+        $this->amount += 5;
+    }
+
     public function render()
     {
-        $tasks = Task::latest()->get();
+        $tasks = Task::latest()->take($this->amount)->get();
 
         return view('livewire.home', [
             'tasks' => $tasks,
