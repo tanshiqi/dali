@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Task;
+use App\Models\User;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
@@ -28,8 +29,25 @@ class Home extends Component
 
     public $amount = 5;
 
+    public $ulid;
+
+    public function mount()
+    {
+        if (session()->get('ulid') != $this->ulid) {
+            if (User::find($this->ulid)) {
+                session()->put('ulid', $this->ulid);
+            } else {
+                session()->forget('ulid');
+
+                return redirect('/');
+            }
+        }
+        // dump(session()->get('ulid'));
+    }
+
     public function updatedPhoto()
     {
+
         // 生成一个唯一的、随机的名字
         $hash = 'ref/'.$this->photo->hashName();
         // 从tmp文件夹移动到ref文件夹，用move代替store，速度更快，因为已经在远程的网盘里了
@@ -58,7 +76,7 @@ class Home extends Component
 
     public function render()
     {
-        $tasks = Task::latest()->take($this->amount)->get();
+        $tasks = Task::where('user_id', $this->ulid)->latest()->take($this->amount)->get();
 
         return view('livewire.home', [
             'tasks' => $tasks,
@@ -93,7 +111,7 @@ class Home extends Component
             }
 
             Task::create([
-                'user_id' => 1,
+                'user_id' => $this->ulid,
                 'prompt' => $prompt,
                 'width' => $width,
                 'height' => $height,
@@ -118,7 +136,7 @@ class Home extends Component
         $response = Http::post($url, $params);
 
         if ($response->ok()) {
-            if (array_key_exists('error_code', $response->json()) || data_get($response->json(), 'data.task_status') == 'FAILED') {
+            if (array_key_exists('error_code', $response->json()) || data_get($response->json(), 'data.task_status') == 'FAILED' || data_get($response->json(), 'data.sub_task_result_list.0.final_image_list.0.img_approve_conclusion') == 'block') {
                 logger()->error([
                     'task_id' => $task_id,
                     'response' => $response->json(),
@@ -126,7 +144,7 @@ class Home extends Component
                 $this->getFailed($task_id, data_get($response->json(), 'data.sub_task_result_list.0.sub_task_error_code'));
             }
 
-            if (data_get($response->json(), 'data.task_status') == 'SUCCESS') {
+            if (data_get($response->json(), 'data.sub_task_result_list.0.final_image_list.0.img_approve_conclusion') == 'pass') {
                 $originImg = data_get($response->json(), 'data.sub_task_result_list.0.final_image_list.0.img_url');
 
                 // 转存到七牛云
@@ -142,6 +160,13 @@ class Home extends Component
             return;
         }
 
+    }
+
+    public function quit()
+    {
+        session()->forget('ulid');
+
+        return redirect('/');
     }
 
     protected function getFailed($task_id, $error = null)

@@ -24,7 +24,7 @@ class AppServiceProvider extends ServiceProvider
     {
         Model::unguard();
 
-        $token = Cache::remember('token', 20 * 24 * 60 * 60, function () {
+        $token = Cache::remember('token', 10 * 24 * 60 * 60, function () {
             return $this->getAccessToken();
         });
     }

@@ -4,14 +4,15 @@
         <div class="absolute inset-x-0 top-0 flex h-4 items-center justify-center lg:hidden" x-on:click="tools=!tools">
             <div class="h-1.5 w-12 rounded-full bg-white/10"></div>
         </div>
-        <div class="flex grow flex-col gap-y-5 overflow-y-auto border border-gray-800 bg-[#2f3543] px-4 pb-3 pt-5 lg:bg-gray-800 lg:px-6 lg:py-0">
+        <div
+             class="flex grow flex-col gap-y-5 overflow-y-auto border border-gray-800 bg-[#2f3543] px-4 pb-3 pt-5 lg:justify-between lg:bg-gray-800 lg:px-6 lg:py-0">
             <div class="hidden h-16 shrink-0 items-center text-gray-100 lg:flex">
                 <svg class="h-8" aria-hidden="true" viewBox="0 0 32 32" stroke="currentColor" stroke-width="1.5" fill="none">
                     <path id="b"
                           d="M3.25 26v.75H7c1.305 0 2.384-.21 3.346-.627.96-.415 1.763-1.02 2.536-1.752.695-.657 1.39-1.443 2.152-2.306l.233-.263c.864-.975 1.843-2.068 3.071-3.266 1.209-1.18 2.881-1.786 4.621-1.786h5.791V5.25H25c-1.305 0-2.384.21-3.346.627-.96.415-1.763 1.02-2.536 1.751-.695.658-1.39 1.444-2.152 2.307l-.233.263c-.864.975-1.843 2.068-3.071 3.266-1.209 1.18-2.881 1.786-4.621 1.786H3.25V26Z" />
                 </svg>
             </div>
-            <form wire:submit="save">
+            <form class="flex-auto" wire:submit="save">
                 <div class="grid grid-cols-5 gap-x-2 gap-y-3 lg:gap-x-3 lg:gap-y-8">
                     <div class="col-span-5 flex items-center gap-x-2 lg:hidden">
                         <label class="flex h-11 w-11 flex-shrink-0 cursor-pointer items-center justify-center rounded-full bg-gray-800 text-gray-300"
@@ -122,6 +123,17 @@
 
                 </div>
             </form>
+            <div class="hidden lg:block">
+                <button class="mb-4 flex items-center rounded-md bg-white/5 px-3 py-2 text-sm text-slate-500 hover:bg-white/10 hover:text-slate-400"
+                        type="button" wire:click='quit' wire:confirm="您可以收藏当前的地址随时继续您的创作，确定现在要退出吗？">
+                    <svg class="mr-1 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor">
+                        <path fill-rule="evenodd"
+                              d="M2 4.75A2.75 2.75 0 0 1 4.75 2h3a2.75 2.75 0 0 1 2.75 2.75v.5a.75.75 0 0 1-1.5 0v-.5c0-.69-.56-1.25-1.25-1.25h-3c-.69 0-1.25.56-1.25 1.25v6.5c0 .69.56 1.25 1.25 1.25h3c.69 0 1.25-.56 1.25-1.25v-.5a.75.75 0 0 1 1.5 0v.5A2.75 2.75 0 0 1 7.75 14h-3A2.75 2.75 0 0 1 2 11.25v-6.5Zm9.47.47a.75.75 0 0 1 1.06 0l2.25 2.25a.75.75 0 0 1 0 1.06l-2.25 2.25a.75.75 0 1 1-1.06-1.06l.97-.97H5.25a.75.75 0 0 1 0-1.5h7.19l-.97-.97a.75.75 0 0 1 0-1.06Z"
+                              clip-rule="evenodd" />
+                    </svg>
+                    退出
+                </button>
+            </div>
         </div>
     </div>
 
@@ -157,7 +169,7 @@
                                 <a class="border-b border-transparent text-sky-500 hover:border-b-sky-500" href="{{ $task->url }}"
                                    target="_blank">{{ substr(md5($task->url), 0, 7) }}</a>
                             @endif
-                            {{ $task->prompt }}<span class="font-normal text-gray-300"> - @user ({{ $task->task_id }})</span>
+                            {{ $task->prompt }}<span class="font-normal text-gray-300"> - {{ '@user' }} ({{ $task->task_id }})</span>
                         </p>
 
                         @if ($task->result)

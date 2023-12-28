@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('user_id')->index();
+            $table->foreignUlid('user_id')->index();
             $table->text('prompt');
             $table->unsignedSmallInteger('width');
             $table->unsignedSmallInteger('height');
