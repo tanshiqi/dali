@@ -37,7 +37,7 @@ class Home extends Component
             if (User::find($this->ulid)) {
                 session()->put('ulid', $this->ulid);
             } else {
-                session()->forget('ulid');
+                // session()->forget('ulid');
 
                 return redirect('/');
             }
