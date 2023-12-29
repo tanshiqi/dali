@@ -10,7 +10,7 @@ class Gallery extends Component
     public function render()
     {
         return view('livewire.gallery', [
-            'gallery' => Task::latest()->get(),
+            'gallery' => Task::whereNotNull('result')->where('result', '!=', 'dali/20231126_9qDtzR.png')->latest()->get(),
         ]);
     }
 }
