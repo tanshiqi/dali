@@ -183,8 +183,7 @@
                                      src="{{ Storage::disk('qiniu')->url($task->result) }}?imageView2/0/w/640/format/jpg">
                             </a>
                         @else
-                            <div class="mt-2 flex h-64 w-64 items-center justify-center rounded-md bg-gray-800 lg:h-80 lg:w-80"
-                                 wire:poll.5s='getResult("{{ $task->task_id }}")'>
+                            <div class="mt-2 flex h-64 w-64 items-center justify-center rounded-md bg-gray-800 lg:h-80 lg:w-80" wire:poll>
                                 <img class="h-12 w-12" src="/img/spin.gif">
                             </div>
                         @endif
