@@ -106,9 +106,6 @@ class ProcessDrawing implements ShouldQueue
                     $savedResponse = $disk->getAdapter()->getBucketManager()->fetch($originImg, $disk->getAdapter()->getBucket());
                     $savedImage = $savedResponse[0]['key'];
 
-                    // Task::where('task_id', $this->task->task_id)->update([
-                    //     'result' => $savedImage,
-                    // ]);
                     // 写入正式图片
                     $this->task->update([
                         'result' => $savedImage,
@@ -122,15 +119,5 @@ class ProcessDrawing implements ShouldQueue
                 ]);
             }
         }
-
     }
-
-    // protected function getFailed($error = null)
-    // {
-    //     // 写入错误图片
-    //     $this->task->update([
-    //         'result' => 'dali/20231126_9qDtzR.png',
-    //         'error' => $error,
-    //     ]);
-    // }
 }
