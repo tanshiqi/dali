@@ -12,13 +12,13 @@ class Welcome extends Component
     {
         $ulid = session()->get('ulid');
         if ($ulid && User::find($ulid)) {
-            return redirect('/'.$ulid);
+            return redirect('/u/'.$ulid);
         } else {
             // 创建新用户
             $user = User::create(['name' => Str::random(12)]);
             session()->put('ulid', $user->id);
 
-            return redirect('/'.$user->id);
+            return redirect('/u/'.$user->id);
         }
 
     }

@@ -26,7 +26,7 @@
                             </svg>
                             <img class="h-5 w-5" src="/img/loading.svg" wire:loading wire:target="photo">
                         </label>
-                        <input class="hidden" id="photo" type="file" wire:model='photo' />
+                        <input class="hidden" id="photo" type="file" accept="image/*" wire:model='photo' />
 
 
 
