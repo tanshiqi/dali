@@ -85,31 +85,39 @@ class ProcessDrawing implements ShouldQueue
         $response = Http::post($url, $params);
 
         if ($response->ok()) {
-            if (array_key_exists('error_code', $response->json()) || data_get($response->json(), 'data.task_status') == 'FAILED' || data_get($response->json(), 'data.sub_task_result_list.0.final_image_list.0.img_approve_conclusion') == 'block') {
+            try {
+                if (array_key_exists('error_code', $response->json()) || data_get($response->json(), 'data.task_status') == 'FAILED' || data_get($response->json(), 'data.sub_task_result_list.0.final_image_list.0.img_approve_conclusion') == 'block') {
+                    logger()->error([
+                        'task_id' => $this->task->task_id,
+                        'response' => $response->json(),
+                    ]);
+                    // 写入错误图片
+                    $this->task->update([
+                        'result' => 'dali/20231126_9qDtzR.png',
+                    ]);
+                }
+
+                if (data_get($response->json(), 'data.sub_task_result_list.0.final_image_list.0.img_approve_conclusion') == 'pass') {
+                    $originImg = data_get($response->json(), 'data.sub_task_result_list.0.final_image_list.0.img_url');
+
+                    // 转存到七牛云
+                    $disk = Storage::disk('qiniu');
+                    $savedResponse = $disk->getAdapter()->getBucketManager()->fetch($originImg, $disk->getAdapter()->getBucket());
+                    $savedImage = $savedResponse[0]['key'];
+
+                    // Task::where('task_id', $this->task->task_id)->update([
+                    //     'result' => $savedImage,
+                    // ]);
+                    // 写入正式图片
+                    $this->task->update([
+                        'result' => $savedImage,
+                    ]);
+                }
+            } catch (\Exception $e) {
                 logger()->error([
+                    'prompt' => $this->task->prompt,
                     'task_id' => $this->task->task_id,
                     'response' => $response->json(),
-                ]);
-                // 写入错误图片
-                $this->task->update([
-                    'result' => 'dali/20231126_9qDtzR.png',
-                ]);
-            }
-
-            if (data_get($response->json(), 'data.sub_task_result_list.0.final_image_list.0.img_approve_conclusion') == 'pass') {
-                $originImg = data_get($response->json(), 'data.sub_task_result_list.0.final_image_list.0.img_url');
-
-                // 转存到七牛云
-                $disk = Storage::disk('qiniu');
-                $savedResponse = $disk->getAdapter()->getBucketManager()->fetch($originImg, $disk->getAdapter()->getBucket());
-                $savedImage = $savedResponse[0]['key'];
-
-                // Task::where('task_id', $this->task->task_id)->update([
-                //     'result' => $savedImage,
-                // ]);
-                // 写入正式图片
-                $this->task->update([
-                    'result' => $savedImage,
                 ]);
             }
         }
