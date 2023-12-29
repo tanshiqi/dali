@@ -7,6 +7,9 @@
 
     <title>{{ $title ?? 'Dali AI' }}</title>
     @vite('resources/css/app.css')
+    @stack('styles')
+    @stack('scripts')
+
 </head>
 
 <body class="h-full">

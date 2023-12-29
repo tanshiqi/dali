@@ -17,7 +17,7 @@ return new class extends Migration
             $table->text('prompt');
             $table->unsignedSmallInteger('width');
             $table->unsignedSmallInteger('height');
-            $table->string('url')->nullable();
+            $table->text('url')->nullable();
             $table->unsignedTinyInteger('change_degree')->nullable();
             $table->string('task_id')->nullable()->index();
             $table->string('result')->nullable();
