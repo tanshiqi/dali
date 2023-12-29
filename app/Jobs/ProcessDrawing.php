@@ -88,6 +88,7 @@ class ProcessDrawing implements ShouldQueue
             try {
                 if (array_key_exists('error_code', $response->json()) || data_get($response->json(), 'data.task_status') == 'FAILED' || data_get($response->json(), 'data.sub_task_result_list.0.final_image_list.0.img_approve_conclusion') == 'block') {
                     logger()->error([
+                        'prompt' => $this->task->prompt,
                         'task_id' => $this->task->task_id,
                         'response' => $response->json(),
                     ]);
