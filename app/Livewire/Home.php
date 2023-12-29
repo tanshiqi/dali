@@ -15,11 +15,11 @@ class Home extends Component
 
     public $prompt = '';
 
-    public $size = '1024 x 1024';
+    public $size = '512 x 512';
 
-    public $width = 1024;
+    public $width = 512;
 
-    public $height = 1024;
+    public $height = 512;
 
     public $url = '';
 
