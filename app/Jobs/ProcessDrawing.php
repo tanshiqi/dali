@@ -90,7 +90,10 @@ class ProcessDrawing implements ShouldQueue
                     'task_id' => $this->task->task_id,
                     'response' => $response->json(),
                 ]);
-                $this->getFailed($this->task->task_id, data_get($response->json(), 'data.sub_task_result_list.0.sub_task_error_code'));
+                // 写入错误图片
+                $this->task->update([
+                    'result' => 'dali/20231126_9qDtzR.png',
+                ]);
             }
 
             if (data_get($response->json(), 'data.sub_task_result_list.0.final_image_list.0.img_approve_conclusion') == 'pass') {
@@ -104,19 +107,21 @@ class ProcessDrawing implements ShouldQueue
                 // Task::where('task_id', $this->task->task_id)->update([
                 //     'result' => $savedImage,
                 // ]);
+                // 写入正式图片
                 $this->task->update([
                     'result' => $savedImage,
                 ]);
             }
         }
+
     }
 
-    protected function getFailed($task_id, $error = null)
-    {
-        // 写入错误图片
-        Task::where('task_id', $task_id)->update([
-            'result' => 'dali/20231126_9qDtzR.png',
-            'error' => $error,
-        ]);
-    }
+    // protected function getFailed($error = null)
+    // {
+    //     // 写入错误图片
+    //     $this->task->update([
+    //         'result' => 'dali/20231126_9qDtzR.png',
+    //         'error' => $error,
+    //     ]);
+    // }
 }
