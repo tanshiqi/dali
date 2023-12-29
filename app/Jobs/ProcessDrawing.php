@@ -34,7 +34,7 @@ class ProcessDrawing implements ShouldQueue
             $this->getResult();
         }
         logger('任务完成，task_id: '.$this->task->task_id);
-        // ProcessResult::dispatch($task_id);
+        sleep(1);
     }
 
     public function sendTask()
