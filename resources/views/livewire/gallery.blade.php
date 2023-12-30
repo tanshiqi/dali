@@ -1,11 +1,16 @@
 <div class="mx-auto max-w-7xl px-4 py-6">
-    <div class="grid grid-cols-4 gap-0.5 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10" id="lightgallery" wire:poll.30s>
-        @foreach ($gallery as $photo)
-            <a href="{{ Storage::disk('qiniu')->url($photo->result) }}" title="{{ $photo->prompt }}">
-                <img class="" src="{{ Storage::disk('qiniu')->url($photo->result) }}?imageView2/1/w/300/format/jpg">
-            </a>
-        @endforeach
-    </div>
+
+    @foreach ($gallery as $date => $items)
+        <h3 class="mb-2 font-bold text-white">{{ $date }}</h3>
+        <div class="mb-4 grid grid-cols-4 gap-0.5 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10" id="lightgallery" wire:poll.30s>
+            @foreach ($items as $photo)
+                <a href="{{ Storage::disk('qiniu')->url($photo->result) }}" title="{{ $photo->prompt }}">
+                    <img class="" src="{{ Storage::disk('qiniu')->url($photo->result) }}?imageView2/1/w/300/format/jpg">
+                </a>
+            @endforeach
+        </div>
+    @endforeach
+
 </div>
 
 @push('styles')

@@ -9,8 +9,11 @@ class Gallery extends Component
 {
     public function render()
     {
+
         return view('livewire.gallery', [
-            'gallery' => Task::whereNotNull('result')->where('result', '!=', 'dali/20231126_9qDtzR.png')->latest()->get(),
+            'gallery' => Task::whereNotNull('result')->where('result', '!=', 'dali/20231126_9qDtzR.png')->latest()->get()->groupBy(function ($item) {
+                return $item->created_at->format('Y-m-d');
+            }),
         ]);
     }
 }
