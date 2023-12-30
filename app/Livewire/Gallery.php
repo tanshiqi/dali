@@ -11,7 +11,7 @@ class Gallery extends Component
     {
 
         return view('livewire.gallery', [
-            'gallery' => Task::whereNotNull('result')->where('result', '!=', 'dali/20231126_9qDtzR.png')->latest()->get()->groupBy(function ($item) {
+            'gallery' => Task::whereNotNull('result')->latest()->get()->groupBy(function ($item) {
                 return $item->created_at->format('Y-m-d');
             }),
         ]);
