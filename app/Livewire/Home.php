@@ -105,6 +105,7 @@ class Home extends Component
     public function quit()
     {
         auth()->logout();
-        $this->redirect('/');
+
+        return redirect('/');
     }
 }
