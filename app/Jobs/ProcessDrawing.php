@@ -20,7 +20,7 @@ class ProcessDrawing implements ShouldQueue
      */
     public function __construct(public Task $task)
     {
-        // $this->onQueue('task');
+        $this->onQueue('baidu');
     }
 
     /**
