@@ -92,6 +92,7 @@ class Home extends Component
         } else {
             ProcessStableDiffusion::dispatch($task);
         }
+        sleep(1);
     }
 
     public function getResult($task_id)
