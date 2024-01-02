@@ -29,8 +29,12 @@ class AppServiceProvider extends ServiceProvider
             URL::forceScheme('https');
         }
 
-        $token = Cache::remember('token', 10 * 24 * 60 * 60, function () {
+        $token = Cache::remember('token', 20 * 24 * 60 * 60, function () {
             return $this->getAccessToken();
+        });
+
+        $censor_token = Cache::remember('censor_token', 20 * 24 * 60 * 60, function () {
+            return $this->getCensorAccessToken();
         });
     }
 
@@ -41,6 +45,22 @@ class AppServiceProvider extends ServiceProvider
             'grant_type' => 'client_credentials',
             'client_id' => config('services.baidu.client_id'),
             'client_secret' => config('services.baidu.client_secret'),
+        ];
+
+        $response = Http::get($url, $params);
+
+        if ($response->ok()) {
+            return $response->json()['access_token'];
+        }
+    }
+
+    protected function getCensorAccessToken()
+    {
+        $url = 'https://aip.baidubce.com/oauth/2.0/token';
+        $params = [
+            'grant_type' => 'client_credentials',
+            'client_id' => config('services.baidu_censor.client_id'),
+            'client_secret' => config('services.baidu_censor.client_secret'),
         ];
 
         $response = Http::get($url, $params);

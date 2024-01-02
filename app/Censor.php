@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Qiniu\Auth;
 use Qiniu\Config;
@@ -9,6 +10,49 @@ use Qiniu\Storage\ArgusManager;
 
 class Censor
 {
+    public static function censorImageViaBaidu($image)
+    {
+        $url = 'https://aip.baidubce.com/rest/2.0/solution/v1/img_censor/v2/user_defined?access_token='.cache('censor_token');
+        $params = [
+            'imgUrl' => $image,
+            'strategyId' => 32049, // 策略ID：https://ai.baidu.com/censoring#/strategylist
+        ];
+
+        $response = Http::asForm()->post($url, $params);
+
+        if ($response->ok()) {
+            try {
+                if (data_get($response->json(), 'conclusionType') == 1) {
+                    info([
+                        'message' => '图片审核通过',
+                        'image' => $image,
+                        'response' => $response->json(),
+                    ]);
+
+                    return true;
+
+                } else {
+                    logger()->warning([
+                        'message' => '图片审核不通过',
+                        'image' => $image,
+                        'response' => $response->json(),
+                    ]);
+                    Storage::disk('s3')->delete(pathinfo($image)['basename']);
+
+                    return false;
+                }
+            } catch (\Throwable $th) {
+                logger()->error([
+                    'message' => '图片审核错误',
+                    'image' => $image,
+                    'response' => $response->json(),
+                ]);
+
+                return false;
+            }
+        }
+    }
+
     public static function censorImage($image)
     {
         $auth = new Auth(env('AWS_ACCESS_KEY_ID'), env('AWS_SECRET_ACCESS_KEY'));

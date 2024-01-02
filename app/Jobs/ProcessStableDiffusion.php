@@ -54,9 +54,7 @@ class ProcessStableDiffusion implements ShouldQueue
                 $disk->put($filename, base64_decode($imageBase64));
 
                 // 审查图片
-                $censorPassOrNot = Censor::censorImage(Storage::disk('qiniu')->url($filename));
-
-                if ($censorPassOrNot) {
+                if (Censor::censorImageViaBaidu(Storage::disk('qiniu')->url($filename))) {
                     $this->task->update([
                         'result' => $filename,
                     ]);

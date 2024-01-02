@@ -36,4 +36,9 @@ return [
         'client_secret' => 'sgt67lpnTZdeAzM0VvDBja65j8p20yPA',
     ],
 
+    'baidu_censor' => [
+        'client_id' => 'LbU9qt7LgzREtkg4u6SzjVhB',
+        'client_secret' => 'W0uMTe9Y75j7AzZUvOTXKTnfWWuNSa1Y',
+    ],
+
 ];
