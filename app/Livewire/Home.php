@@ -3,8 +3,8 @@
 namespace App\Livewire;
 
 use App\Jobs\ProcessDrawing;
+use App\Jobs\ProcessStableDiffusion;
 use App\Models\Task;
-use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -29,20 +29,15 @@ class Home extends Component
 
     public $amount = 5;
 
-    public $ulid;
+    public $shortid;
+
+    public $aimodel = 'Stable Diffusion'; // AI模型
 
     public function mount()
     {
-        if (session()->get('ulid') != $this->ulid) {
-            if (User::find($this->ulid)) {
-                session()->put('ulid', $this->ulid);
-            } else {
-                // session()->forget('ulid');
-
-                return redirect('/');
-            }
+        if (auth()->id() != $this->shortid) {
+            auth()->logout();
         }
-        // dump(session()->get('ulid'));
     }
 
     public function updatedPhoto()
@@ -75,7 +70,7 @@ class Home extends Component
 
     public function render()
     {
-        $tasks = Task::where('user_id', $this->ulid)->latest()->take($this->amount)->get();
+        $tasks = Task::where('user_id', auth()->id())->latest()->take($this->amount)->get();
 
         return view('livewire.home', [
             'tasks' => $tasks,
@@ -85,16 +80,18 @@ class Home extends Component
     protected function sendTask($prompt, $width, $height, $change_degree, $reference = '')
     {
         $task = Task::create([
-            'user_id' => $this->ulid,
+            'user_id' => auth()->id(),
             'prompt' => $prompt,
             'width' => $width,
             'height' => $height,
             'url' => $reference,
             'change_degree' => $change_degree,
         ]);
-        ProcessDrawing::dispatch($task);
-        sleep(1);
-
+        if ($this->aimodel == 'Baidu AI') {
+            ProcessDrawing::dispatch($task);
+        } else {
+            ProcessStableDiffusion::dispatch($task);
+        }
     }
 
     public function getResult($task_id)
@@ -106,8 +103,7 @@ class Home extends Component
 
     public function quit()
     {
-        session()->forget('ulid');
-
-        return redirect('/');
+        auth()->logout();
+        $this->redirect('/');
     }
 }

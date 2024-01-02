@@ -2,9 +2,18 @@
 
 use App\Livewire\Gallery;
 use App\Livewire\Home;
-use App\Livewire\Welcome;
+use App\Livewire\Login;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', Welcome::class)->name('welcome');
-Route::get('/gallery', Gallery::class)->name('gallery');
-Route::get('/u/{ulid}', Home::class)->name('home');
+Route::middleware('auth')->group(function () {
+    Route::get('/', function () {
+        return redirect('/u/'.auth()->id());
+    });
+    Route::get('/u/{shortid}', Home::class)->name('home');
+});
+
+Route::middleware(['guest'])->group(function () {
+    Route::get('/login', Login::class)->name('login');
+});
+
+Route::get('/admin/gallery', Gallery::class)->name('gallery');

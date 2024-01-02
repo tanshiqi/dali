@@ -6,11 +6,83 @@
         </div>
         <div
              class="flex grow flex-col gap-y-5 overflow-y-auto border border-gray-800 bg-[#2f3543] px-4 pb-3 pt-5 lg:justify-between lg:bg-gray-800 lg:px-6 lg:py-0">
-            <div class="hidden h-16 shrink-0 items-center text-gray-100 lg:flex">
+            <div class="hidden h-16 shrink-0 items-center text-gray-100 lg:flex lg:justify-between">
                 <svg class="h-8" aria-hidden="true" viewBox="0 0 32 32" stroke="currentColor" stroke-width="1.5" fill="none">
                     <path id="b"
                           d="M3.25 26v.75H7c1.305 0 2.384-.21 3.346-.627.96-.415 1.763-1.02 2.536-1.752.695-.657 1.39-1.443 2.152-2.306l.233-.263c.864-.975 1.843-2.068 3.071-3.266 1.209-1.18 2.881-1.786 4.621-1.786h5.791V5.25H25c-1.305 0-2.384.21-3.346.627-.96.415-1.763 1.02-2.536 1.751-.695.658-1.39 1.444-2.152 2.307l-.233.263c-.864.975-1.843 2.068-3.071 3.266-1.209 1.18-2.881 1.786-4.621 1.786H3.25V26Z" />
                 </svg>
+                <div>
+                    <div class="relative" x-data="{
+                        open: false,
+                        toggle() {
+                            if (this.open) {
+                                return this.close()
+                            }
+                            this.$refs.button.focus()
+                            this.open = true
+                        },
+                        close(focusAfter) {
+                            if (!this.open) return
+                            this.open = false
+                            focusAfter && focusAfter.focus()
+                        }
+                    }" x-on:keydown.escape.prevent.stop="close($refs.button)"
+                         x-on:focusin.window="! $refs.panel.contains($event.target) && close()" x-id="['dropdown-button']">
+                        <div class="inline-flex divide-x divide-sky-700 rounded-md shadow-sm">
+                            <div class="inline-flex items-center gap-x-1.5 rounded-l-md bg-sky-600 px-3 py-1.5 text-white shadow-sm">
+                                <p class="text-xs font-semibold" x-text="$wire.aimodel"></p>
+                            </div>
+                            <button class="inline-flex items-center rounded-l-none rounded-r-md bg-sky-600 p-1.5 hover:bg-sky-700 focus:outline-none focus:ring-0 focus:ring-sky-600"
+                                    type="button" aria-haspopup="listbox" aria-expanded="true" aria-labelledby="listbox-label" x-ref="button"
+                                    x-on:click="toggle()" :aria-expanded="open" :aria-controls="$id('dropdown-button')">
+                                <span class="sr-only">Change published status</span>
+                                <svg class="h-5 w-5 text-white" aria-hidden="true" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd"
+                                          d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                                          clip-rule="evenodd" />
+                                </svg>
+                            </button>
+                        </div>
+                        <ul class="absolute right-0 z-10 mt-2 w-60 origin-top-right divide-y divide-gray-200 overflow-hidden rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                            x-transition.origin.top.right x-ref="panel" x-show="open" x-on:click.outside="close($refs.button)">
+                            <li class="group cursor-default select-none p-4 text-sm text-gray-900 hover:bg-sky-600 hover:text-white"
+                                @click="$wire.aimodel='Stable Diffusion';close($refs.button)">
+                                <div class="flex flex-col">
+                                    <div class="flex justify-between">
+                                        <!-- Selected: "font-semibold", Not Selected: "font-normal" -->
+                                        <p :class="$wire.aimodel == 'Stable Diffusion' ? 'font-semibold' : 'font-normal'">Stable Diffusion</p>
+                                        <span class="text-sky-600 group-hover:text-white">
+                                            <svg class="h-4 w-4" aria-hidden="true" viewBox="0 0 20 20" fill="currentColor"
+                                                 x-show="$wire.aimodel=='Stable Diffusion'">
+                                                <path fill-rule="evenodd"
+                                                      d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                                                      clip-rule="evenodd" />
+                                            </svg>
+                                        </span>
+                                    </div>
+                                    <p class="mt-1 text-xs text-gray-500 group-hover:text-sky-200">基于 Stable Diffusion 的图像生成模型</p>
+                                </div>
+                            </li>
+                            <li class="group cursor-default select-none p-4 text-sm text-gray-900 hover:bg-sky-600 hover:text-white"
+                                @click="$wire.aimodel='Baidu AI';close($refs.button)">
+                                <div class="flex flex-col">
+                                    <div class="flex justify-between">
+                                        <!-- Selected: "font-semibold", Not Selected: "font-normal" -->
+                                        <p :class="$wire.aimodel == 'Baidu AI' ? 'font-semibold' : 'font-normal'">Baidu AI</p>
+                                        <span class="text-sky-600 group-hover:text-white">
+                                            <svg class="h-4 w-4" aria-hidden="true" viewBox="0 0 20 20" fill="currentColor" x-show="$wire.aimodel=='Baidu AI'">
+                                                <path fill-rule="evenodd"
+                                                      d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                                                      clip-rule="evenodd" />
+                                            </svg>
+                                        </span>
+                                    </div>
+                                    <p class="mt-1 text-xs text-gray-500 group-hover:text-sky-200">基于百度文心人工智能的图像生成模型</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
             <form class="flex-auto" wire:submit="save">
                 <div class="grid grid-cols-5 gap-x-2 gap-y-3 lg:gap-x-3 lg:gap-y-8">
@@ -35,8 +107,8 @@
 
                         <button class="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full bg-sky-600 text-white shadow-sm hover:bg-sky-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-sky-500 disabled:cursor-not-allowed disabled:bg-gray-800 disabled:text-gray-600 lg:w-auto"
                                 type="submit" :disabled="prompt == ''" wire:loading.attr="disabled" wire:target="save">
-                            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                 wire:loading.remove wire:target="save">
+                            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                 stroke="currentColor" wire:loading.remove wire:target="save">
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                       d="M15.59 14.37a6 6 0 01-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 006.16-12.12A14.98 14.98 0 009.631 8.41m5.96 5.96a14.926 14.926 0 01-5.841 2.58m-.119-8.54a6 6 0 00-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 00-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 01-2.448-2.448 14.9 14.9 0 01.06-.312m-2.24 2.39a4.493 4.493 0 00-1.757 4.306 4.493 4.493 0 004.306-1.758M16.5 9a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z" />
                             </svg>
@@ -123,8 +195,8 @@
 
                 </div>
             </form>
-            <div class="hidden lg:block">
-                <button class="mb-4 flex items-center rounded-md bg-white/5 px-3 py-2 text-sm text-slate-500 hover:bg-white/10 hover:text-slate-400"
+            <div class="mb-4 hidden items-center justify-between lg:flex">
+                <button class="flex items-center rounded-md bg-white/5 px-3 py-2 text-sm font-semibold text-slate-400 hover:bg-white/10 hover:text-slate-300"
                         type="button" wire:click='quit' wire:confirm="您可以收藏当前的地址随时继续您的创作，确定现在要退出吗？">
                     <svg class="mr-1 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor">
                         <path fill-rule="evenodd"
@@ -133,6 +205,9 @@
                     </svg>
                     退出
                 </button>
+                <div class="text-sm font-semibold text-gray-500" wire:ignore>
+                    {{ auth()->user()?->client?->name }}
+                </div>
             </div>
         </div>
     </div>
@@ -153,6 +228,7 @@
             </svg>
 
         </button>
+
     </div>
 
     <main class="pt-6 lg:pl-96 lg:pt-10">
