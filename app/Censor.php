@@ -33,6 +33,12 @@ class Censor
 
         if (data_get($result, '0.result.suggestion') == 'pass') {
             // 审核通过
+            info([
+                'message' => '图片审核通过',
+                'image' => $image,
+                'response' => $result,
+            ]);
+
             return true;
         } else {
             // 审核不通过
