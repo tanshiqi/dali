@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -23,6 +24,10 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Model::unguard();
+
+        if (env('APP_ENV') === 'production') {
+            URL::forceSchema('https');
+        }
 
         $token = Cache::remember('token', 10 * 24 * 60 * 60, function () {
             return $this->getAccessToken();

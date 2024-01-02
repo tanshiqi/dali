@@ -106,6 +106,6 @@ class Home extends Component
     {
         auth()->logout();
 
-        return redirect('/');
+        $this->redirect('/');
     }
 }
