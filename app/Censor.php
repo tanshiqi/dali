@@ -15,7 +15,7 @@ class Censor
         $url = 'https://aip.baidubce.com/rest/2.0/solution/v1/img_censor/v2/user_defined?access_token='.cache('censor_token');
         $params = [
             'imgUrl' => $image,
-            'strategyId' => 32049, // 策略ID：https://ai.baidu.com/censoring#/strategylist
+            'strategyId' => 32056, // 策略ID：https://ai.baidu.com/censoring#/strategylist
         ];
 
         $response = Http::asForm()->post($url, $params);
