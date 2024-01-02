@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Censor;
 use App\Models\Task;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -51,9 +52,19 @@ class ProcessStableDiffusion implements ShouldQueue
                 $disk = Storage::disk('qiniu');
                 $filename = Str::random(16).'.png';
                 $disk->put($filename, base64_decode($imageBase64));
-                $this->task->update([
-                    'result' => $filename,
-                ]);
+
+                // 审查图片
+                $censorPassOrNot = Censor::censorImage(Storage::disk('qiniu')->url($filename));
+
+                if ($censorPassOrNot) {
+                    $this->task->update([
+                        'result' => $filename,
+                    ]);
+                } else {
+                    $this->task->update([
+                        'result' => 'dali/20231126_9qDtzR.png',
+                    ]);
+                }
 
             } catch (\Exception $e) {
                 logger()->error([
