@@ -40,7 +40,19 @@ class ProcessStableDiffusion implements ShouldQueue
             'height' => $this->task->height,
             // 'change_degree' => $this->task->change_degree,
             // 'url' => $this->task->reference,
-            'restore_faces' => true, // 脸部修复
+            'negative_prompt' => 'lowres ,bad hands ,worst quality ,missing fingers ,fewer digits ,extra digit ,unclear eyes,bad face ,plump breasts ,more than c cup ,',
+            'steps' => 27,
+            'sampler_name' => 'DPM++ 2S a Karras',
+            'cfg_scale' => 8.5,
+            'alwayson_scripts' => [
+                'face editor ex' => [
+                    'args' => [
+                        [
+                            'prompt_for_face' => 'seductive smile',
+                        ],
+                    ],
+                ],
+            ],
         ];
 
         $response = Http::post($url, $params);
