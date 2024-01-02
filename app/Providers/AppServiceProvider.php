@@ -25,9 +25,9 @@ class AppServiceProvider extends ServiceProvider
     {
         Model::unguard();
 
-        // if (env('APP_ENV') === 'production') {
-        //     URL::forceSchema('https');
-        // }
+        if (env('APP_ENV') === 'production') {
+            URL::forceScheme('https');
+        }
 
         $token = Cache::remember('token', 10 * 24 * 60 * 60, function () {
             return $this->getAccessToken();
