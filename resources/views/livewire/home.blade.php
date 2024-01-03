@@ -47,12 +47,14 @@
             <form class="mt-6 flex-auto px-4 lg:px-6" wire:submit="save">
                 <div class="space-y-6 lg:space-y-8" x-show="activeTab == 'tab1'">
                     <div>
-                        <label class="mb-2 block text-sm font-medium leading-6 text-white" for="url">参考图 URL / 影响因子</label>
+                        <label class="mb-2 block text-sm font-medium leading-6 text-white" for="url">参考图 URL <span x-show="aimodel=='Baidu AI'">/
+                                影响因子</span></label>
                         <div class="flex w-full items-center">
                             <div class="relative flex-auto rounded-md shadow-sm">
-                                <input class="block w-full rounded-md border-0 bg-gray-800 bg-white/5 py-1.5 pr-16 text-sm leading-6 text-white ring-1 ring-inset ring-white/10 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-500 [&_*]:text-black"
-                                       id="url" name="url" type="text" wire:model='url' placeholder="参考图的完整 URL" autocomplete="off">
-                                <div class="absolute inset-y-0 right-0 flex items-center">
+                                <input class="block w-full rounded-md border-0 bg-gray-800 bg-white/5 py-1.5 text-sm leading-6 text-white ring-1 ring-inset ring-white/10 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-500 [&_*]:text-black"
+                                       id="url" name="url" type="text" :class="aimodel == 'Baidu AI' ? 'pr-16' : ''" wire:model='url'
+                                       placeholder="参考图的完整 URL" autocomplete="off">
+                                <div class="absolute inset-y-0 right-0 flex items-center" x-show="aimodel=='Baidu AI'">
                                     <label class="sr-only" for="degree">参考图影响因子</label>
                                     <select class="h-full rounded-md border-0 bg-transparent py-0 pl-2 pr-7 text-sm text-white focus:ring-2 focus:ring-inset focus:ring-sky-600 [&_*]:text-black"
                                             id="degree" name="degree" wire:model.number='change_degree'>
@@ -78,7 +80,8 @@
                             </label>
                             <input class="hidden" id="photo" type="file" accept="image/*" wire:model='photo' />
                         </div>
-                        <p class="mt-2 text-xs leading-5 text-gray-400">参考图可选；影响因子数字 1-10，数值越大参考图影响越大。</p>
+                        <p class="mt-2 text-xs leading-5 text-gray-400">参考图可选。<span x-show="aimodel=='Baidu AI'">影响因子数字 1-10，数值越大参考图影响越大。</span>
+                        </p>
                     </div>
                     <div>
                         <label class="mb-2 block text-sm font-medium leading-6 text-white" for="size">图片尺寸 <span
