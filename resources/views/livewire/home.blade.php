@@ -1,58 +1,56 @@
-<div x-data="{ prompt: @entangle('prompt'), tools: false }" x-on:visible = "tools = true">
-    <div class="fixed inset-x-0 bottom-0 transform transition lg:inset-y-0 lg:z-50 lg:flex lg:w-96 lg:translate-y-0 lg:flex-col" x-cloak
-         :class="tools ? 'translate-y-0' : 'translate-y-14'">
-        <div class="absolute inset-x-0 top-0 flex h-4 items-center justify-center lg:hidden" x-on:click="tools=!tools">
-            <div class="h-1.5 w-12 rounded-full bg-white/10"></div>
+<div x-data="{
+    prompt: @entangle('prompt'),
+    aimodel: @entangle('aimodel'),
+    slideover: false,
+    activeTab: 'tab1',
+    init() {
+        $watch('aimodel', () => this.activeTab = 'tab1');
+        $watch('slideover', () => {
+            if (this.slideover) {
+                document.body.classList.add('overflow-y-hidden');
+            } else {
+                document.body.classList.remove('overflow-y-hidden');
+            }
+        });
+    }
+}">
+    {{-- 遮罩层 --}}
+    <div class="pointer-events-none fixed inset-0 z-40 lg:hidden">
+        <div class="absolute inset-0 bg-gray-700 bg-opacity-75 backdrop-blur-sm" x-show="slideover" x-transition.opacity.duration.500ms>
         </div>
-        <div
-             class="flex grow flex-col gap-y-5 overflow-y-auto border border-gray-800 bg-[#2f3543] px-4 pb-3 pt-5 lg:justify-between lg:bg-gray-800 lg:px-6 lg:py-0">
-            <div class="hidden h-16 shrink-0 items-center text-gray-100 lg:flex lg:justify-between">
+    </div>
+
+    {{-- panel --}}
+    <div class="max-w-96 pointer-events-none fixed inset-y-0 z-40 flex w-full transform flex-col pr-10 transition duration-500 ease-in-out sm:w-96 sm:pr-0 lg:translate-x-0"
+         :class="slideover ? '-translate-x-0' : '-translate-x-full'" x-cloak @click.outside="slideover=false">
+        <div class="pointer-events-auto relative z-50 flex grow flex-col overflow-y-auto bg-gray-800 py-0">
+            <div class="hidden h-16 shrink-0 items-center justify-between bg-gray-800 px-4 text-gray-100 lg:flex lg:px-6">
                 <svg class="h-8" aria-hidden="true" viewBox="0 0 32 32" stroke="currentColor" stroke-width="1.5" fill="none">
                     <path id="b"
                           d="M3.25 26v.75H7c1.305 0 2.384-.21 3.346-.627.96-.415 1.763-1.02 2.536-1.752.695-.657 1.39-1.443 2.152-2.306l.233-.263c.864-.975 1.843-2.068 3.071-3.266 1.209-1.18 2.881-1.786 4.621-1.786h5.791V5.25H25c-1.305 0-2.384.21-3.346.627-.96.415-1.763 1.02-2.536 1.751-.695.658-1.39 1.444-2.152 2.307l-.233.263c-.864.975-1.843 2.068-3.071 3.266-1.209 1.18-2.881 1.786-4.621 1.786H3.25V26Z" />
                 </svg>
-                <div>
-                    <livewire:components.ai-selector wire:model='aimodel' />
-                </div>
+                <livewire:components.ai-selector wire:model='aimodel' />
             </div>
-            <form class="flex-auto" wire:submit="save">
-                <div class="grid grid-cols-5 gap-x-2 gap-y-3 lg:gap-x-3 lg:gap-y-8">
-                    <div class="col-span-5 flex items-center gap-x-2 lg:hidden">
-                        <label class="flex h-11 w-11 flex-shrink-0 cursor-pointer items-center justify-center rounded-full bg-gray-800 text-gray-300"
-                               for="photo">
-                            <svg class="h-5 w-5" wire:loading.remove wire:target="photo" xmlns="http://www.w3.org/2000/svg" width="44" height="44"
-                                 viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                <path
-                                      d="M5 7h1a2 2 0 0 0 2 -2a1 1 0 0 1 1 -1h6a1 1 0 0 1 1 1a2 2 0 0 0 2 2h1a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-9a2 2 0 0 1 2 -2" />
-                                <path d="M9 13a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />
-                            </svg>
-                            <img class="h-5 w-5" src="/img/loading.svg" wire:loading wire:target="photo">
-                        </label>
-                        <input class="hidden" id="photo" type="file" accept="image/*" wire:model='photo' />
+            {{-- tabs begin --}}
+            <div
+                 class="relative flex h-14 flex-shrink-0 flex-col justify-end border-b border-gray-600 bg-gradient-to-b from-gray-800 to-gray-700/50 px-4 lg:px-6">
+                <nav
+                     class="*:px-4 *:border *:pb-2 *:pt-2.5 *:text-xs *:-mb-px *:font-semibold *:rounded-t-md is-active *:bg-gray-700 *:border-gray-600 *:text-gray-300 hover:*:bg-gray-600/70 hover:*:text-gray-300 flex space-x-2 [&>.is-active]:border-b-gray-800 [&>.is-active]:bg-gray-800 [&>.is-active]:text-sky-400">
+                    <button type="button" :class="activeTab == 'tab1' ? 'is-active' : ''" @click.prevent ="activeTab='tab1'">通用参数</button>
+                    <button type="button" :class="activeTab == 'tab2' ? 'is-active' : ''" @click.prevent ="activeTab='tab2'"
+                            x-show="$wire.aimodel=='Stable Diffusion'">SD 参数</button>
+                </nav>
+            </div>
+            {{-- tabs end --}}
 
-
-
-                        <input class="block w-full rounded-full border-0 bg-gray-800 px-4 py-2.5 text-white ring-1 ring-inset ring-gray-900/50 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-500 lg:hidden [&_*]:text-black"
-                               name="prompt" type="text" wire:model='prompt' placeholder="提示词，仅支持中文及标点" autocomplete="off">
-
-                        <button class="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full bg-sky-600 text-white shadow-sm hover:bg-sky-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-sky-500 disabled:cursor-not-allowed disabled:bg-gray-800 disabled:text-gray-600 lg:w-auto"
-                                type="submit" :disabled="prompt == ''" wire:loading.attr="disabled" wire:target="save">
-                            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                 wire:loading.remove wire:target="save">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                      d="M15.59 14.37a6 6 0 01-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 006.16-12.12A14.98 14.98 0 009.631 8.41m5.96 5.96a14.926 14.926 0 01-5.841 2.58m-.119-8.54a6 6 0 00-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 00-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 01-2.448-2.448 14.9 14.9 0 01.06-.312m-2.24 2.39a4.493 4.493 0 00-1.757 4.306 4.493 4.493 0 004.306-1.758M16.5 9a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z" />
-                            </svg>
-                            <img class="h-5 w-5" src="/img/loading.svg" wire:loading wire:target="save">
-                        </button>
-
-                    </div>
-
-                    <div class="col-span-3 lg:col-span-5">
-                        <label class="mb-2 hidden text-sm font-medium leading-6 text-white lg:block" for="url">参考图 URL / 影响因子</label>
+            {{-- tab1 --}}
+            <form class="mt-6 flex-auto px-4 lg:px-6" wire:submit="save">
+                <div class="space-y-6 lg:space-y-8" x-show="activeTab == 'tab1'">
+                    <div>
+                        <label class="mb-2 block text-sm font-medium leading-6 text-white" for="url">参考图 URL / 影响因子</label>
                         <div class="flex w-full items-center">
                             <div class="relative flex-auto rounded-md shadow-sm">
-                                <input class="block w-full rounded-full border-0 bg-gray-800 py-2.5 pr-16 text-white ring-1 ring-inset ring-gray-900/50 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-500 sm:leading-6 lg:rounded-md lg:bg-white/5 lg:py-1.5 lg:text-sm lg:ring-white/10 [&_*]:text-black"
+                                <input class="block w-full rounded-md border-0 bg-gray-800 bg-white/5 py-1.5 pr-16 text-sm leading-6 text-white ring-1 ring-inset ring-white/10 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-500 [&_*]:text-black"
                                        id="url" name="url" type="text" wire:model='url' placeholder="参考图的完整 URL" autocomplete="off">
                                 <div class="absolute inset-y-0 right-0 flex items-center">
                                     <label class="sr-only" for="degree">参考图影响因子</label>
@@ -71,24 +69,22 @@
                                     </select>
                                 </div>
                             </div>
-                            <label class="hidden flex-shrink-0 lg:block" for="photo">
+                            <label class="flex-shrink-0" for="photo">
                                 <div
-                                     class="ml-2 flex h-8 w-16 cursor-pointer items-center justify-center rounded bg-white/10 text-xs text-gray-300 shadow-sm hover:bg-white/5">
+                                     class="ml-2 flex h-9 w-16 cursor-pointer items-center justify-center rounded bg-emerald-600 text-xs font-semibold text-white/80 shadow-sm hover:bg-emerald-700">
                                     <span wire:loading.remove wire:target="photo">上传图片</span>
                                     <img class="h-5 w-5" src="/img/loading.svg" wire:loading wire:target="photo">
                                 </div>
-
                             </label>
+                            <input class="hidden" id="photo" type="file" accept="image/*" wire:model='photo' />
                         </div>
-
-                        <p class="mt-2 hidden text-xs leading-5 text-gray-400 lg:block">参考图可选；影响因子数字 1-10，数值越大参考图影响越大。</p>
+                        <p class="mt-2 text-xs leading-5 text-gray-400">参考图可选；影响因子数字 1-10，数值越大参考图影响越大。</p>
                     </div>
-
-                    <div class="col-span-2 lg:col-span-5">
-                        <label class="mb-2 hidden text-sm font-medium leading-6 text-white lg:block" for="size">图片尺寸 <span
+                    <div>
+                        <label class="mb-2 block text-sm font-medium leading-6 text-white" for="size">图片尺寸 <span
                                   class="text-orange-500">*</span></label>
                         <div>
-                            <select class="block w-full rounded-full border-0 bg-gray-800 py-2.5 text-white shadow-sm ring-1 ring-inset ring-gray-900/50 focus:ring-2 focus:ring-inset focus:ring-sky-500 sm:leading-6 lg:rounded-md lg:bg-white/5 lg:py-1.5 lg:text-sm lg:ring-white/10 [&_*]:text-black"
+                            <select class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-sm leading-6 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-sky-500 [&_*]:text-black"
                                     id="size" name="size" wire:model='size' wire:change='sizeChanged'>
                                 <option selected>512 x 512</option>
                                 <option>640 x 360</option>
@@ -102,31 +98,102 @@
                             </select>
                         </div>
                     </div>
-
-                    <div class="col-span-5 hidden lg:block">
-                        <label class="mb-2 hidden text-sm font-medium leading-6 text-white lg:block" for="prompt">Prompt <span
+                    <div>
+                        <label class="mb-2 block text-sm font-medium leading-6 text-white" for="prompt">提示词 <span
                                   class="text-orange-500">*</span></label>
                         <div>
-                            <textarea class="w-full resize-none rounded-md border-0 bg-white/5 py-1.5 text-sm text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-sky-500 sm:leading-6"
+                            <textarea class="w-full resize-none rounded-md border-0 bg-white/5 py-1.5 align-top text-sm leading-6 text-white shadow-sm ring-1 ring-inset ring-white/10 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-500"
                                       id="prompt" name="prompt" rows="4" wire:model='prompt' placeholder="生图的文本描述，仅支持中文、日常标点符号" autocomplete="off"></textarea>
                         </div>
-                        <p class="mt-2 hidden text-xs leading-5 text-gray-400 lg:block">生图的文本描述，仅支持中文及日常标点符号。不支持英文、特殊符号，限制 200 字。</p>
+                        <p class="mt-2 block text-xs leading-5 text-gray-400">生图的文本描述，Baidu AI 仅支持中文及日常标点符号，不支持英文、特殊符号，限制 200 字。</p>
                     </div>
+                </div>
 
 
-
-
-                    <div class="col-span-5 hidden items-center justify-end lg:flex">
-                        <button class="flex w-full items-center rounded-md bg-sky-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-sky-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-600 disabled:cursor-not-allowed disabled:bg-gray-700 disabled:text-gray-400 lg:w-auto"
-                                type="submit" :disabled="prompt == ''" wire:loading.attr="disabled" wire:target="save">开始绘画
-
-                            <img class="ml-1 h-4 w-4" src="/img/loading.svg" wire:loading wire:target="save">
-                        </button>
+                {{-- tab2 --}}
+                <div class="space-y-6 lg:space-y-8" x-show="activeTab == 'tab2'" x-cloak>
+                    <div>
+                        <label class="mb-2 block text-sm font-medium leading-6 text-white" for="negative_prompt">负面提示词（Negative Prompt）</label>
+                        <div>
+                            <textarea class="w-full resize-none rounded-md border-0 bg-white/5 py-1.5 align-top text-sm leading-6 text-white shadow-sm ring-1 ring-inset ring-white/10 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-500"
+                                      id="negative_prompt" name="negative_prompt" rows="3" wire:model='negative_prompt' placeholder="如果看到不想要的内容，请将其置于负面提示词中" autocomplete="off"></textarea>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="mb-2 block text-sm font-medium leading-6 text-white" for="sampler_name">采样方法（Sampler）</label>
+                        <select class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-sm leading-6 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-sky-500 [&_*]:text-black"
+                                id="sampler_name" name="sampler_name" wire:model='sampler_name' autocomplete="off">
+                            <option>DPM++ 2M Karras</option>
+                            <option>DPM++ SDE Karras</option>
+                            <option>DPM++ 2M SDE Exponential</option>
+                            <option>DPM++ 2M SDE Karras</option>
+                            <option>Euler a</option>
+                            <option>Euler</option>
+                            <option>LMS</option>
+                            <option>Heun</option>
+                            <option>DPM2</option>
+                            <option>DPM2 a</option>
+                            <option>DPM++ 2S a</option>
+                            <option>DPM++ 2M</option>
+                            <option>DPM++ SDE</option>
+                            <option>DPM++ 2M SDE</option>
+                            <option>DPM++ 2M SDE Heun</option>
+                            <option>DPM++ 2M SDE Heun Karras</option>
+                            <option>DPM++ 2M SDE Heun Exponential</option>
+                            <option>DPM++ 3M SDE</option>
+                            <option>DPM++ 3M SDE Karras</option>
+                            <option>DPM++ 3M SDE Exponential</option>
+                            <option>DPM fast</option>
+                            <option>DPM adaptive</option>
+                            <option>LMS Karras</option>
+                            <option>DPM2 Karras</option>
+                            <option>DPM2 a Karras</option>
+                            <option>DPM++ 2S a Karras</option>
+                            <option>Restart</option>
+                            <option>DDIM</option>
+                            <option>PLMS</option>
+                            <option>UniPC</option>
+                            <option>LCM</option>
+                        </select>
+                    </div>
+                    <div>
+                        <div class="mb-2 flex items-center justify-between">
+                            <label class="block text-sm font-medium leading-6 text-white" for="steps">采样迭代步数（Steps）</label>
+                            <span class="text-sm font-semibold text-white" x-text="$wire.steps"></span>
+                        </div>
+                        <input class="w-full cursor-pointer appearance-none bg-transparent focus:outline-none [&::-moz-range-thumb]:h-2.5 [&::-moz-range-thumb]:w-2.5 [&::-moz-range-thumb]:appearance-none [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-4 [&::-moz-range-thumb]:border-sky-500 [&::-moz-range-thumb]:bg-white [&::-moz-range-thumb]:transition-all [&::-moz-range-thumb]:duration-150 [&::-moz-range-thumb]:ease-in-out [&::-moz-range-track]:h-2 [&::-moz-range-track]:w-full [&::-moz-range-track]:rounded-full [&::-moz-range-track]:bg-gray-700 [&::-webkit-slider-runnable-track]:h-2 [&::-webkit-slider-runnable-track]:w-full [&::-webkit-slider-runnable-track]:rounded-full [&::-webkit-slider-runnable-track]:bg-gray-700 [&::-webkit-slider-thumb]:-mt-0.5 [&::-webkit-slider-thumb]:h-2.5 [&::-webkit-slider-thumb]:w-2.5 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:shadow-[0_0_0_4px_rgba(14,165,233,1)] [&::-webkit-slider-thumb]:transition-all [&::-webkit-slider-thumb]:duration-150 [&::-webkit-slider-thumb]:ease-in-out"
+                               id="steps" type="range" wire:model='steps' min="1" max="150">
+                    </div>
+                    <div>
+                        <div class="mb-2 flex items-center justify-between">
+                            <label class="block text-sm font-medium leading-6 text-white" for="cfg_scale">提示词相关性（CFG Scale）</label>
+                            <span class="text-sm font-semibold text-white" x-text="$wire.cfg_scale"></span>
+                        </div>
+                        <input class="w-full cursor-pointer appearance-none bg-transparent focus:outline-none [&::-moz-range-thumb]:h-2.5 [&::-moz-range-thumb]:w-2.5 [&::-moz-range-thumb]:appearance-none [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-4 [&::-moz-range-thumb]:border-sky-500 [&::-moz-range-thumb]:bg-white [&::-moz-range-thumb]:transition-all [&::-moz-range-thumb]:duration-150 [&::-moz-range-thumb]:ease-in-out [&::-moz-range-track]:h-2 [&::-moz-range-track]:w-full [&::-moz-range-track]:rounded-full [&::-moz-range-track]:bg-gray-700 [&::-webkit-slider-runnable-track]:h-2 [&::-webkit-slider-runnable-track]:w-full [&::-webkit-slider-runnable-track]:rounded-full [&::-webkit-slider-runnable-track]:bg-gray-700 [&::-webkit-slider-thumb]:-mt-0.5 [&::-webkit-slider-thumb]:h-2.5 [&::-webkit-slider-thumb]:w-2.5 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:shadow-[0_0_0_4px_rgba(14,165,233,1)] [&::-webkit-slider-thumb]:transition-all [&::-webkit-slider-thumb]:duration-150 [&::-webkit-slider-thumb]:ease-in-out"
+                               id="cfg_scale" type="range" wire:model='cfg_scale' min="1" max="30" step="0.5">
+                    </div>
+                    <div>
+                        <label class="mb-2 block text-sm font-medium leading-6 text-white" for="prompt_for_face">面部修复（Face Editor）</label>
+                        <div>
+                            <textarea class="w-full resize-none rounded-md border-0 bg-white/5 py-1.5 align-top text-sm leading-6 text-white shadow-sm ring-1 ring-inset ring-white/10 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-500"
+                                      id="prompt_for_face" name="prompt_for_face" rows="3" wire:model='prompt_for_face' placeholder="面部修复提示词" autocomplete="off"></textarea>
+                        </div>
                     </div>
 
                 </div>
+
+
+                <div class="mt-8 flex items-center justify-end" x-cloak>
+                    <button class="flex w-auto items-center rounded-md bg-sky-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-sky-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-600 disabled:cursor-not-allowed disabled:bg-gray-700 disabled:text-gray-400"
+                            type="submit" :disabled="prompt == ''" wire:loading.attr="disabled" wire:target="save">开始绘画
+
+                        <img class="ml-1 h-4 w-4" src="/img/loading.svg" wire:loading wire:target="save">
+                    </button>
+                </div>
+
+
             </form>
-            <div class="mb-4 hidden items-center justify-between lg:flex">
+            <div class="mb-4 mt-8 hidden items-center justify-between px-4 lg:flex lg:px-6">
                 <button class="flex items-center rounded-md bg-white/5 px-3 py-2 text-sm font-semibold text-slate-400 hover:bg-white/10 hover:text-slate-300"
                         type="button" wire:click='quit' wire:confirm="您可以收藏当前的地址随时继续您的创作，确定现在要退出吗？">
                     <svg class="mr-1 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor">
@@ -143,23 +210,20 @@
         </div>
     </div>
 
-    <div class="sticky top-0 z-40 flex items-center gap-x-3 border-b border-gray-800 bg-[#2f3543] px-4 py-3 sm:px-6 lg:hidden">
-        <div class="flex flex-1 items-center gap-3 text-sm font-semibold leading-6 text-gray-200">
-            <svg class="h-7" aria-hidden="true" viewBox="0 0 32 32" stroke="currentColor" stroke-width="1.5" fill="none">
-                <path id="b"
-                      d="M3.25 26v.75H7c1.305 0 2.384-.21 3.346-.627.96-.415 1.763-1.02 2.536-1.752.695-.657 1.39-1.443 2.152-2.306l.233-.263c.864-.975 1.843-2.068 3.071-3.266 1.209-1.18 2.881-1.786 4.621-1.786h5.791V5.25H25c-1.305 0-2.384.21-3.346.627-.96.415-1.763 1.02-2.536 1.751-.695.658-1.39 1.444-2.152 2.307l-.233.263c-.864.975-1.843 2.068-3.071 3.266-1.209 1.18-2.881 1.786-4.621 1.786H3.25V26Z" />
-            </svg>Dali AI
+    <div class="sticky top-0 z-30 flex items-center gap-x-3 bg-gray-800/50 px-4 py-3 backdrop-blur sm:px-6 lg:hidden">
+        <div class="flex flex-1 items-center text-gray-200 lg:hidden">
+            <button @click.stop="slideover=true">
+                <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none"
+                     stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path d="M4 6l16 0" />
+                    <path d="M4 12l16 0" />
+                    <path d="M4 18l16 0" />
+                </svg>
+            </button>
         </div>
-        <livewire:components.ai-selector wire:model='aimodel' />
-        <button class="flex items-center rounded-md text-sm text-white/60 lg:hidden" type="button" wire:click='quit'
-                wire:confirm="您可以收藏当前的地址随时继续您的创作，确定现在要退出吗？">
-            <svg class="ml-1 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor">
-                <path fill-rule="evenodd"
-                      d="M2 4.75A2.75 2.75 0 0 1 4.75 2h3a2.75 2.75 0 0 1 2.75 2.75v.5a.75.75 0 0 1-1.5 0v-.5c0-.69-.56-1.25-1.25-1.25h-3c-.69 0-1.25.56-1.25 1.25v6.5c0 .69.56 1.25 1.25 1.25h3c.69 0 1.25-.56 1.25-1.25v-.5a.75.75 0 0 1 1.5 0v.5A2.75 2.75 0 0 1 7.75 14h-3A2.75 2.75 0 0 1 2 11.25v-6.5Zm9.47.47a.75.75 0 0 1 1.06 0l2.25 2.25a.75.75 0 0 1 0 1.06l-2.25 2.25a.75.75 0 1 1-1.06-1.06l.97-.97H5.25a.75.75 0 0 1 0-1.5h7.19l-.97-.97a.75.75 0 0 1 0-1.06Z"
-                      clip-rule="evenodd" />
-            </svg>
 
-        </button>
+        <livewire:components.ai-selector wire:model='aimodel' />
 
     </div>
 

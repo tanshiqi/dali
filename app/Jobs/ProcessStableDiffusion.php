@@ -34,26 +34,15 @@ class ProcessStableDiffusion implements ShouldQueue
             'task_id' => 'sd'.uniqid(),
         ]);
         $url = 'http://localhost:6006/sdapi/v1/txt2img';
-        $params = [
+        $params = array_merge([
             'prompt' => $this->task->prompt,
             'width' => $this->task->width,
             'height' => $this->task->height,
             // 'change_degree' => $this->task->change_degree,
             // 'url' => $this->task->reference,
-            'negative_prompt' => 'lowres ,bad hands ,worst quality ,missing fingers ,fewer digits ,extra digit ,unclear eyes,bad face ,plump breasts ,more than c cup ,',
-            'steps' => 27,
-            'sampler_name' => 'DPM++ 2S a Karras',
-            'cfg_scale' => 8.5,
-            'alwayson_scripts' => [
-                'face editor ex' => [
-                    'args' => [
-                        [
-                            'prompt_for_face' => 'seductive smile',
-                        ],
-                    ],
-                ],
-            ],
-        ];
+        ], $this->task->sdparams);
+
+        // logger($params);
 
         $response = Http::post($url, $params);
 

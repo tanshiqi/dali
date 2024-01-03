@@ -33,6 +33,18 @@ class Home extends Component
 
     public $aimodel = 'Stable Diffusion'; // AI模型
 
+    //stable diffusion 专用
+
+    public $negative_prompt = '';
+
+    public $sampler_name = 'DPM++ 3M SDE Karras';
+
+    public $steps = 20;
+
+    public $cfg_scale = 7;
+
+    public $prompt_for_face = '';
+
     public function mount()
     {
         if (auth()->id() != $this->shortid) {
@@ -86,6 +98,21 @@ class Home extends Component
             'height' => $height,
             'url' => $reference,
             'change_degree' => $change_degree,
+            'sdparams' => [
+                'negative_prompt' => $this->negative_prompt,
+                'sampler_name' => $this->sampler_name,
+                'steps' => $this->steps,
+                'cfg_scale' => $this->cfg_scale,
+                'alwayson_scripts' => [
+                    'face editor ex' => [
+                        'args' => [
+                            [
+                                'prompt_for_face' => $this->prompt_for_face,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
         ]);
         if ($this->aimodel == 'Baidu AI') {
             ProcessDrawing::dispatch($task);
