@@ -267,6 +267,6 @@
                 </div>
             @endforeach
         </div>
-        <div class="h-48" x-intersect.full="$wire.loadmore"></div>
+        <div class="h-24" x-intersect.full="$wire.loadmore"></div>
     </main>
 </div>
