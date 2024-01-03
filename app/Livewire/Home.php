@@ -99,7 +99,7 @@ class Home extends Component
             'url' => $reference,
             'change_degree' => $change_degree,
             'sdparams' => [
-                'negative_prompt' => $this->negative_prompt,
+                'negative_prompt' => config('dali.default_negative_prompt').$this->negative_prompt,
                 'sampler_name' => $this->sampler_name,
                 'steps' => $this->steps,
                 'cfg_scale' => $this->cfg_scale,
