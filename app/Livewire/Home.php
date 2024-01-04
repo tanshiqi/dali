@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Jobs\ProcessDallE;
 use App\Jobs\ProcessDrawing;
 use App\Jobs\ProcessStableDiffusion;
 use App\Models\Task;
@@ -115,11 +116,21 @@ class Home extends Component
                 ],
             ],
         ]);
-        if ($this->aiprovider == 'Baidu AI') {
-            ProcessDrawing::dispatch($task);
-        } else {
-            ProcessStableDiffusion::dispatch($task);
+
+        switch ($this->aiprovider) {
+            case 'Baidu AI':
+                ProcessDrawing::dispatch($task);
+                break;
+
+            case 'DALL-E':
+                ProcessDallE::dispatch($task);
+                break;
+
+            default:
+                ProcessStableDiffusion::dispatch($task);
+                break;
         }
+
         sleep(1);
     }
 

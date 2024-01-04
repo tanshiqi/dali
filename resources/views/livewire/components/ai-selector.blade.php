@@ -64,5 +64,22 @@
                 <p class="mt-1 text-xs text-gray-500 group-hover:text-sky-200">基于百度文心人工智能的图像生成模型</p>
             </div>
         </li>
+        <li class="group cursor-default select-none p-4 text-sm text-gray-900 hover:bg-sky-600 hover:text-white"
+            @click="$wire.value='DALL-E';close($refs.button)">
+            <div class="flex flex-col">
+                <div class="flex justify-between">
+                    <!-- Selected: "font-semibold", Not Selected: "font-normal" -->
+                    <p :class="$wire.value == 'DALL-E' ? 'font-semibold' : 'font-normal'">DALL-E</p>
+                    <span class="text-sky-600 group-hover:text-white">
+                        <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor" x-show="$wire.value=='DALL-E'">
+                            <path fill-rule="evenodd"
+                                  d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+                                  clip-rule="evenodd" />
+                        </svg>
+                    </span>
+                </div>
+                <p class="mt-1 text-xs text-gray-500 group-hover:text-sky-200">基于 OpenAI GPT-3 图像生成模型</p>
+            </div>
+        </li>
     </ul>
 </div>

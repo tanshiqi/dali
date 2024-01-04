@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
-class ProcessStableDiffusion implements ShouldQueue
+class ProcessDallE implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -22,7 +22,7 @@ class ProcessStableDiffusion implements ShouldQueue
      */
     public function __construct(public Task $task)
     {
-        $this->onQueue('stablediffusion');
+        $this->onQueue('dalle');
     }
 
     /**
@@ -31,24 +31,26 @@ class ProcessStableDiffusion implements ShouldQueue
     public function handle(): void
     {
         $this->task->update([
-            'task_id' => 'sd'.uniqid(),
+            'task_id' => 'dalle'.uniqid(),
         ]);
-        $url = env('SD').'/sdapi/v1/txt2img';
-        $params = array_merge([
+
+        $url = 'https://api.openai.com/v1/images/generations';
+        $headers = [
+            'Authorization' => 'Bearer '.env('OPENAI_API_KEY'),
+        ];
+        $params = [
             'prompt' => $this->task->prompt,
-            'width' => $this->task->width,
-            'height' => $this->task->height,
-            // 'change_degree' => $this->task->change_degree,
-            // 'url' => $this->task->reference,
-        ], $this->task->sdparams);
+            'size' => $this->task->width.'x'.$this->task->height,
+            'model' => 'dall-e-3',
+            'n' => 1,
+            'response_format' => 'b64_json',
+        ];
 
-        // logger($params);
-
-        $response = Http::timeout(60)->post($url, $params);
+        $response = Http::timeout(60)->withHeaders($headers)->post($url, $params);
 
         if ($response->ok()) {
             try {
-                $imageBase64 = data_get($response->json(), 'images.0');
+                $imageBase64 = data_get($response->json(), 'data.0.b64_json');
                 // 写文件到七牛
                 $disk = Storage::disk('qiniu');
                 $filename = Str::random(16).'.png';
