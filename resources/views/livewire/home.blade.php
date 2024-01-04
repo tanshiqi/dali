@@ -255,24 +255,26 @@
                         @if ($task->result)
                             @if ($task->result == 'block.png')
                                 <div class="mt-2 inline-block overflow-hidden rounded-md bg-gray-800/70">
-                                @else
-                                    <div class="mt-2 inline-block cursor-pointer overflow-hidden rounded-md bg-gray-800/70"
-                                         wire:click.prevent="$dispatch('openModal', { component: 'viewer', arguments: { task: {{ $task->id }} }})">
+                                    <img class="size-64 lg:size-80 object-contain"
+                                         src="{{ Storage::disk('qiniu')->url($task->result) }}?imageView2/0/w/640/format/jpg">
+                                </div>
+                            @else
+                                <div class="mt-2 inline-block cursor-pointer overflow-hidden rounded-md bg-gray-800/70"
+                                     wire:click.prevent="$dispatch('openModal', { component: 'viewer', arguments: { task: {{ $task->id }} }})">
+                                    <img class="size-64 lg:size-80 object-contain"
+                                         src="{{ Storage::disk('qiniu')->url($task->result) }}?imageView2/0/w/640/format/jpg">
+                                </div>
                             @endif
+                        @else
+                            <div class="size-64 lg:size-80 mt-2 flex items-center justify-center rounded-md bg-gray-800" wire:poll>
+                                <img class="size-12" src="/img/spin.gif">
+                            </div>
+                        @endif
 
-                            <img class="size-64 lg:size-80 object-contain"
-                                 src="{{ Storage::disk('qiniu')->url($task->result) }}?imageView2/0/w/640/format/jpg">
                     </div>
-                @else
-                    <div class="size-64 lg:size-80 mt-2 flex items-center justify-center rounded-md bg-gray-800" wire:poll>
-                        <img class="size-12" src="/img/spin.gif">
-                    </div>
-            @endif
-
+                </div>
+            @endforeach
         </div>
-</div>
-@endforeach
-</div>
-<div class="h-24" x-intersect.full="$wire.loadmore"></div>
-</main>
+        <div class="h-24" x-intersect.full="$wire.loadmore"></div>
+    </main>
 </div>
