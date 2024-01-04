@@ -14,9 +14,14 @@
             <p class="text-sm font-medium lg:text-base">{{ $task->prompt }}</p>
             <div
                  class="*:inline-flex *:items-center *:rounded-md *:bg-gray-400/10 *:px-2 *:py-1 *:text-xs *:font-medium *:text-gray-400 *:ring-1 *:ring-inset *:ring-gray-400/20 *:whitespace-nowrap *:mr-0.5 *:mb-0.5">
-                <span>{{ 'Sampler ' . data_get($task->sdparams, 'sampler_name') }}</span>
-                <span>{{ 'Steps ' . data_get($task->sdparams, 'steps') }}</span>
-                <span>{{ 'CFG Scale ' . data_get($task->sdparams, 'cfg_scale') }}</span>
+                <span>{{ $task->aiprovider }}</span>
+                @if ($task->aiprovider == 'Stable Diffusion')
+                    <span>{{ 'Sampler ' . data_get($task->sdparams, 'sampler_name') }}</span>
+                    <span>{{ 'Steps ' . data_get($task->sdparams, 'steps') }}</span>
+                    <span>{{ 'CFG Scale ' . data_get($task->sdparams, 'cfg_scale') }}</span>
+                @endif
+
+                <span>{{ $task->width . ' x ' . $task->height }}</span>
             </div>
         </div>
 

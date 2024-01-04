@@ -1,10 +1,10 @@
 <div x-data="{
     prompt: @entangle('prompt'),
-    aimodel: @entangle('aimodel'),
+    aiprovider: @entangle('aiprovider'),
     slideover: false,
     activeTab: 'tab1',
     init() {
-        $watch('aimodel', () => this.activeTab = 'tab1');
+        $watch('aiprovider', () => this.activeTab = 'tab1');
         $watch('slideover', () => {
             if (this.slideover) {
                 document.body.classList.add('overflow-y-hidden');
@@ -29,7 +29,7 @@
                     <path id="b"
                           d="M3.25 26v.75H7c1.305 0 2.384-.21 3.346-.627.96-.415 1.763-1.02 2.536-1.752.695-.657 1.39-1.443 2.152-2.306l.233-.263c.864-.975 1.843-2.068 3.071-3.266 1.209-1.18 2.881-1.786 4.621-1.786h5.791V5.25H25c-1.305 0-2.384.21-3.346.627-.96.415-1.763 1.02-2.536 1.751-.695.658-1.39 1.444-2.152 2.307l-.233.263c-.864.975-1.843 2.068-3.071 3.266-1.209 1.18-2.881 1.786-4.621 1.786H3.25V26Z" />
                 </svg>
-                <livewire:components.ai-selector wire:model='aimodel' />
+                <livewire:components.ai-selector wire:model='aiprovider' />
             </div>
             {{-- tabs begin --}}
             <div
@@ -38,7 +38,7 @@
                      class="*:px-4 *:border *:pb-2 *:pt-2.5 *:text-xs *:-mb-px *:font-semibold *:rounded-t-md is-active *:bg-gray-700 *:border-gray-600 *:text-gray-300 hover:*:bg-gray-600/70 hover:*:text-gray-300 flex space-x-2 [&>.is-active]:border-b-gray-800 [&>.is-active]:bg-gray-800 [&>.is-active]:text-sky-400">
                     <button type="button" :class="activeTab == 'tab1' ? 'is-active' : ''" @click.prevent ="activeTab='tab1'">通用参数</button>
                     <button type="button" :class="activeTab == 'tab2' ? 'is-active' : ''" @click.prevent ="activeTab='tab2'"
-                            x-show="$wire.aimodel=='Stable Diffusion'">SD 参数</button>
+                            x-show="$wire.aiprovider=='Stable Diffusion'">SD 参数</button>
                 </nav>
             </div>
             {{-- tabs end --}}
@@ -47,15 +47,15 @@
             <form class="mt-6 flex-auto px-4 lg:px-6" wire:submit="save">
                 <div class="space-y-6 lg:space-y-8" x-show="activeTab == 'tab1'">
                     <div>
-                        <label class="mb-2 block text-sm font-medium leading-6 text-white" for="url">参考图 URL <span x-show="aimodel=='Baidu AI'">/
+                        <label class="mb-2 block text-sm font-medium leading-6 text-white" for="url">参考图 URL <span x-show="aiprovider=='Baidu AI'">/
                                 影响因子</span>
                         </label>
                         <div class="flex w-full items-center">
                             <div class="relative flex-auto rounded-md shadow-sm">
                                 <input class="block w-full rounded-md border-0 bg-gray-800 bg-white/5 py-1.5 text-sm leading-6 text-white ring-1 ring-inset ring-white/10 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-500 [&_*]:text-black"
-                                       id="url" name="url" type="text" :class="aimodel == 'Baidu AI' ? 'pr-16' : ''" wire:model='url'
+                                       id="url" name="url" type="text" :class="aiprovider == 'Baidu AI' ? 'pr-16' : ''" wire:model='url'
                                        placeholder="参考图的完整 URL" autocomplete="off">
-                                <div class="absolute inset-y-0 right-0 flex items-center" x-show="aimodel=='Baidu AI'">
+                                <div class="absolute inset-y-0 right-0 flex items-center" x-show="aiprovider=='Baidu AI'">
                                     <label class="sr-only" for="degree">参考图影响因子</label>
                                     <select class="h-full rounded-md border-0 bg-transparent py-0 pl-2 pr-7 text-sm text-white focus:ring-2 focus:ring-inset focus:ring-sky-600 [&_*]:text-black"
                                             id="degree" name="degree" wire:model.number='change_degree'>
@@ -81,7 +81,7 @@
                             </label>
                             <input class="hidden" id="photo" type="file" accept="image/*" wire:model='photo' />
                         </div>
-                        <p class="mt-2 text-xs leading-5 text-gray-400">参考图可选。<span x-show="aimodel=='Baidu AI'">影响因子数字 1-10，数值越大参考图影响越大。</span>
+                        <p class="mt-2 text-xs leading-5 text-gray-400">参考图可选。<span x-show="aiprovider=='Baidu AI'">影响因子数字 1-10，数值越大参考图影响越大。</span>
                         </p>
                     </div>
                     <div>
@@ -227,7 +227,7 @@
             </button>
         </div>
 
-        <livewire:components.ai-selector wire:model='aimodel' />
+        <livewire:components.ai-selector wire:model='aiprovider' />
 
     </div>
 

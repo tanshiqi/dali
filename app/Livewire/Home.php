@@ -31,7 +31,7 @@ class Home extends Component
 
     public $shortid;
 
-    public $aimodel = 'Stable Diffusion'; // AI模型
+    public $aiprovider = 'Stable Diffusion'; // AI模型
 
     //stable diffusion 专用
 
@@ -72,7 +72,7 @@ class Home extends Component
 
     public function save()
     {
-        return $this->sendTask($this->prompt, $this->width, $this->height, $this->change_degree, $this->url);
+        return $this->sendTask($this->aiprovider, $this->prompt, $this->width, $this->height, $this->change_degree, $this->url);
     }
 
     public function loadmore()
@@ -89,10 +89,11 @@ class Home extends Component
         ]);
     }
 
-    protected function sendTask($prompt, $width, $height, $change_degree, $reference = '')
+    protected function sendTask($aiprovider, $prompt, $width, $height, $change_degree, $reference = '')
     {
         $task = Task::create([
             'user_id' => auth()->id(),
+            'aiprovider' => $aiprovider,
             'prompt' => $prompt,
             'width' => $width,
             'height' => $height,
@@ -114,7 +115,7 @@ class Home extends Component
                 ],
             ],
         ]);
-        if ($this->aimodel == 'Baidu AI') {
+        if ($this->aiprovider == 'Baidu AI') {
             ProcessDrawing::dispatch($task);
         } else {
             ProcessStableDiffusion::dispatch($task);
