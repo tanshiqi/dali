@@ -33,7 +33,7 @@ class ProcessDallE implements ShouldQueue
         $this->task->update([
             'task_id' => 'dalle'.uniqid(),
         ]);
-        logger('DALL-E 任务已创建，task_id: '.$this->task->task_id);
+        info('DALL-E 任务已创建，task_id: '.$this->task->task_id);
 
         $url = 'https://api.openai.com/v1/images/generations';
         $headers = [
@@ -67,7 +67,7 @@ class ProcessDallE implements ShouldQueue
                         'result' => 'block.png',
                     ]);
                 }
-                logger('DALL-E 任务完成，task_id: '.$this->task->task_id);
+                info('DALL-E 任务完成，task_id: '.$this->task->task_id);
 
             } catch (\Exception $e) {
                 logger()->error([
