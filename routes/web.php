@@ -3,6 +3,7 @@
 use App\Livewire\Gallery;
 use App\Livewire\Home;
 use App\Livewire\Login;
+use App\Livewire\Test;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth')->group(function () {
@@ -17,3 +18,5 @@ Route::middleware(['guest'])->group(function () {
 });
 
 Route::get('/admin/gallery', Gallery::class)->name('gallery');
+
+Route::get('/test', Test::class);

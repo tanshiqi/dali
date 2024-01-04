@@ -12,8 +12,9 @@
 
 </head>
 
-<body class="h-full">
+<body>
     {{ $slot }}
+    @livewire('wire-elements-modal')
 </body>
 
 </html>

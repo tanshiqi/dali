@@ -33,7 +33,7 @@ class ProcessStableDiffusion implements ShouldQueue
         $this->task->update([
             'task_id' => 'sd'.uniqid(),
         ]);
-        $url = 'http://localhost:6006/sdapi/v1/txt2img';
+        $url = env('SD').'/sdapi/v1/txt2img';
         $params = array_merge([
             'prompt' => $this->task->prompt,
             'width' => $this->task->width,

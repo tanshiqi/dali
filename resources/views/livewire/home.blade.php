@@ -75,7 +75,7 @@
                                 <div
                                      class="ml-2 flex h-9 w-16 cursor-pointer items-center justify-center rounded bg-emerald-600 text-xs font-semibold text-white/80 shadow-sm hover:bg-emerald-700">
                                     <span wire:loading.remove wire:target="photo">上传图片</span>
-                                    <img class="h-5 w-5" src="/img/loading.svg" wire:loading wire:target="photo">
+                                    <img class="size-5" src="/img/loading.svg" wire:loading wire:target="photo">
                                 </div>
                             </label>
                             <input class="hidden" id="photo" type="file" accept="image/*" wire:model='photo' />
@@ -190,7 +190,7 @@
                     <button class="flex w-auto items-center rounded-md bg-sky-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-sky-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-600 disabled:cursor-not-allowed disabled:bg-gray-700 disabled:text-gray-400"
                             type="submit" :disabled="prompt == ''" wire:loading.attr="disabled" wire:target="save">开始绘画
 
-                        <img class="ml-1 h-4 w-4" src="/img/loading.svg" wire:loading wire:target="save">
+                        <img class="size-4 ml-1" src="/img/loading.svg" wire:loading wire:target="save">
                     </button>
                 </div>
 
@@ -199,7 +199,7 @@
             <div class="mb-4 mt-8 hidden items-center justify-between px-4 lg:flex lg:px-6">
                 <button class="flex items-center rounded-md bg-white/5 px-3 py-2 text-sm font-semibold text-slate-400 hover:bg-white/10 hover:text-slate-300"
                         type="button" wire:click='quit' wire:confirm="您可以收藏当前的地址随时继续您的创作，确定现在要退出吗？">
-                    <svg class="mr-1 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor">
+                    <svg class="size-4 mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor">
                         <path fill-rule="evenodd"
                               d="M2 4.75A2.75 2.75 0 0 1 4.75 2h3a2.75 2.75 0 0 1 2.75 2.75v.5a.75.75 0 0 1-1.5 0v-.5c0-.69-.56-1.25-1.25-1.25h-3c-.69 0-1.25.56-1.25 1.25v6.5c0 .69.56 1.25 1.25 1.25h3c.69 0 1.25-.56 1.25-1.25v-.5a.75.75 0 0 1 1.5 0v.5A2.75 2.75 0 0 1 7.75 14h-3A2.75 2.75 0 0 1 2 11.25v-6.5Zm9.47.47a.75.75 0 0 1 1.06 0l2.25 2.25a.75.75 0 0 1 0 1.06l-2.25 2.25a.75.75 0 1 1-1.06-1.06l.97-.97H5.25a.75.75 0 0 1 0-1.5h7.19l-.97-.97a.75.75 0 0 1 0-1.06Z"
                               clip-rule="evenodd" />
@@ -216,7 +216,7 @@
     <div class="sticky top-0 z-30 flex items-center gap-x-3 bg-gray-800/50 px-4 py-3 backdrop-blur sm:px-6 lg:hidden">
         <div class="flex flex-1 items-center text-gray-200 lg:hidden">
             <button @click.stop="slideover=true">
-                <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none"
+                <svg class="size-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none"
                      stroke-linecap="round" stroke-linejoin="round">
                     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                     <path d="M4 6l16 0" />
@@ -252,14 +252,16 @@
                         </p>
 
                         @if ($task->result)
-                            <a class="mt-2 inline-block overflow-hidden rounded-md bg-gray-800/70" href="{{ Storage::disk('qiniu')->url($task->result) }}"
-                               target="_blank">
-                                <img class="h-64 w-64 object-contain lg:h-80 lg:w-80"
+                            {{-- <a class="mt-2 inline-block overflow-hidden rounded-md bg-gray-800/70" href="{{ Storage::disk('qiniu')->url($task->result) }}"
+                               target="_blank"> --}}
+                            <div class="mt-2 inline-block cursor-pointer overflow-hidden rounded-md bg-gray-800/70"
+                                 wire:click.prevent="$dispatch('openModal', { component: 'viewer', arguments: { task: {{ $task->id }} }})">
+                                <img class="size-64 lg:size-80 object-contain"
                                      src="{{ Storage::disk('qiniu')->url($task->result) }}?imageView2/0/w/640/format/jpg">
-                            </a>
+                            </div>
                         @else
-                            <div class="mt-2 flex h-64 w-64 items-center justify-center rounded-md bg-gray-800 lg:h-80 lg:w-80" wire:poll>
-                                <img class="h-12 w-12" src="/img/spin.gif">
+                            <div class="size-64 lg:size-80 mt-2 flex items-center justify-center rounded-md bg-gray-800" wire:poll>
+                                <img class="size-12" src="/img/spin.gif">
                             </div>
                         @endif
 

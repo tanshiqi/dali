@@ -14,7 +14,8 @@
         "league/flysystem-aws-s3-v3": "^3.0",
         "livewire/livewire": "^3.2",
         "opcodesio/log-viewer": "^3.1",
-        "overtrue/laravel-filesystem-qiniu": "^2.2"
+        "overtrue/laravel-filesystem-qiniu": "^2.2",
+        "wire-elements/modal": "^2.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
