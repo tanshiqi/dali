@@ -1,4 +1,5 @@
-<div class="min-h-dvh flex flex-col justify-center px-6 py-12 pb-52 lg:px-8" x-data="loginpin" @setpin.window="$wire.pinCompleted($event.detail)">
+<div class="min-h-dvh flex flex-col justify-center bg-gray-700 px-6 py-12 pb-52 lg:px-8" x-data="loginpin"
+     @setpin.window="$wire.pinCompleted($event.detail)">
     <div class="sm:mx-auto sm:w-full sm:max-w-sm">
         <div class="flex justify-center text-center text-gray-100">
             <svg class="h-8" aria-hidden="true" viewBox="0 0 32 32" stroke="currentColor" stroke-width="1.5" fill="none">

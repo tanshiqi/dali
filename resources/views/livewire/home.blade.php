@@ -1,4 +1,4 @@
-<div x-data="{
+<div class="min-h-dvh bg-gray-700" x-data="{
     prompt: @entangle('prompt'),
     aiprovider: @entangle('aiprovider'),
     slideover: false,
@@ -260,7 +260,7 @@
                                 </div>
                             @else
                                 <div class="mt-2 inline-block cursor-pointer overflow-hidden rounded-md bg-gray-800/70"
-                                     wire:click.prevent="$dispatch('openModal', { component: 'viewer', arguments: { task: {{ $task->id }} }})">
+                                     wire:click.stop="$dispatch('openModal', { component: 'viewer', arguments: { task: {{ $task->id }} }})">
                                     <img class="size-64 lg:size-80 object-contain"
                                          src="{{ Storage::disk('qiniu')->url($task->result) }}?imageView2/0/w/640/format/jpg">
                                 </div>

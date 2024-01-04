@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="h-full overscroll-none bg-gray-700 font-sans antialiased" lang="zh-cmn-Hans">
+<html class="min-h-dvh overscroll-none font-sans antialiased" lang="zh-cmn-Hans">
 
 <head>
     <meta charset="utf-8">
