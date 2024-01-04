@@ -21,7 +21,7 @@
             </div>
 
             <div
-                 class="relative block h-full w-full transform overflow-hidden rounded-lg bg-gray-950 text-left align-bottom shadow-xl transition-all ease-in-out sm:align-middle"
+                 class="relative block h-full w-full transform overflow-hidden rounded-xl bg-gray-950 text-left align-bottom shadow-xl transition-all ease-in-out sm:align-middle"
                  id="modal-container" aria-modal="true" x-show="show && showActiveComponent" x-transition.duration.300ms
                  x-trap.noscroll.inert="show && showActiveComponent">
                 @forelse($components as $id => $component)
