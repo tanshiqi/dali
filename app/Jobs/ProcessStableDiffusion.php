@@ -61,7 +61,7 @@ class ProcessStableDiffusion implements ShouldQueue
                     ]);
                 } else {
                     $this->task->update([
-                        'result' => 'dali/20231126_9qDtzR.png',
+                        'result' => 'block.png',
                     ]);
                 }
 

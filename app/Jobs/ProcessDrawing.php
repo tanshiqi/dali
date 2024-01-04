@@ -67,7 +67,7 @@ class ProcessDrawing implements ShouldQueue
 
             $this->task->update([
                 'task_id' => $task_id,
-                'result' => str_starts_with($task_id, 'err_') ? 'dali/20231126_9qDtzR.png' : null,
+                'result' => str_starts_with($task_id, 'err_') ? 'block.png' : null,
                 'error' => str_starts_with($task_id, 'err_') ? data_get($response->json(), 'error_msg') : null,
             ]);
         }
@@ -94,7 +94,7 @@ class ProcessDrawing implements ShouldQueue
                     ]);
                     // 写入错误图片
                     $this->task->update([
-                        'result' => 'dali/20231126_9qDtzR.png',
+                        'result' => 'block.png',
                     ]);
                 }
 

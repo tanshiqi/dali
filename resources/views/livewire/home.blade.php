@@ -48,7 +48,8 @@
                 <div class="space-y-6 lg:space-y-8" x-show="activeTab == 'tab1'">
                     <div>
                         <label class="mb-2 block text-sm font-medium leading-6 text-white" for="url">参考图 URL <span x-show="aimodel=='Baidu AI'">/
-                                影响因子</span></label>
+                                影响因子</span>
+                        </label>
                         <div class="flex w-full items-center">
                             <div class="relative flex-auto rounded-md shadow-sm">
                                 <input class="block w-full rounded-md border-0 bg-gray-800 bg-white/5 py-1.5 text-sm leading-6 text-white ring-1 ring-inset ring-white/10 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-500 [&_*]:text-black"
@@ -252,23 +253,26 @@
                         </p>
 
                         @if ($task->result)
-                            {{-- <a class="mt-2 inline-block overflow-hidden rounded-md bg-gray-800/70" href="{{ Storage::disk('qiniu')->url($task->result) }}"
-                               target="_blank"> --}}
-                            <div class="mt-2 inline-block cursor-pointer overflow-hidden rounded-md bg-gray-800/70"
-                                 wire:click.prevent="$dispatch('openModal', { component: 'viewer', arguments: { task: {{ $task->id }} }})">
-                                <img class="size-64 lg:size-80 object-contain"
-                                     src="{{ Storage::disk('qiniu')->url($task->result) }}?imageView2/0/w/640/format/jpg">
-                            </div>
-                        @else
-                            <div class="size-64 lg:size-80 mt-2 flex items-center justify-center rounded-md bg-gray-800" wire:poll>
-                                <img class="size-12" src="/img/spin.gif">
-                            </div>
-                        @endif
+                            @if ($task->result == 'block.png')
+                                <div class="mt-2 inline-block overflow-hidden rounded-md bg-gray-800/70">
+                                @else
+                                    <div class="mt-2 inline-block cursor-pointer overflow-hidden rounded-md bg-gray-800/70"
+                                         wire:click.prevent="$dispatch('openModal', { component: 'viewer', arguments: { task: {{ $task->id }} }})">
+                            @endif
 
+                            <img class="size-64 lg:size-80 object-contain"
+                                 src="{{ Storage::disk('qiniu')->url($task->result) }}?imageView2/0/w/640/format/jpg">
                     </div>
-                </div>
-            @endforeach
+                @else
+                    <div class="size-64 lg:size-80 mt-2 flex items-center justify-center rounded-md bg-gray-800" wire:poll>
+                        <img class="size-12" src="/img/spin.gif">
+                    </div>
+            @endif
+
         </div>
-        <div class="h-24" x-intersect.full="$wire.loadmore"></div>
-    </main>
+</div>
+@endforeach
+</div>
+<div class="h-24" x-intersect.full="$wire.loadmore"></div>
+</main>
 </div>

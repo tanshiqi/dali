@@ -70,7 +70,7 @@ class ProcessResult implements ShouldQueue
     {
         // 写入错误图片
         Task::where('task_id', $task_id)->update([
-            'result' => 'dali/20231126_9qDtzR.png',
+            'result' => 'block.png',
             'error' => $error,
         ]);
     }
