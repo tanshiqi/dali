@@ -78,7 +78,7 @@
                         </svg>
                     </span>
                 </div>
-                <p class="mt-1 text-xs text-gray-500 group-hover:text-sky-200">基于 OpenAI GPT-3 图像生成模型</p>
+                <p class="mt-1 text-xs text-gray-500 group-hover:text-sky-200">基于 OpenAI DALL-E 3 图像生成模型</p>
             </div>
         </li>
     </ul>

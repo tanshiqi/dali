@@ -90,7 +90,7 @@
                         <div>
                             <select class="block w-full rounded-md border-0 bg-white/5 py-1.5 text-sm leading-6 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-sky-500 [&_*]:text-black"
                                     id="size" name="size" wire:model='size' wire:change='sizeChanged'>
-                                <option selected>512 x 512</option>
+                                <option>512 x 512</option>
                                 <option>640 x 360</option>
                                 <option>360 x 640</option>
                                 <option>1024 x 1024</option>
