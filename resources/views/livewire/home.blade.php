@@ -33,7 +33,7 @@
             </div>
             {{-- tabs begin --}}
             <div
-                 class="relative flex h-14 flex-shrink-0 flex-col justify-end border-b border-gray-600 bg-gradient-to-b from-gray-800 to-gray-700/50 px-4 lg:px-6">
+                 class="relative flex h-[52px] flex-shrink-0 flex-col justify-end border-b border-gray-600 bg-gradient-to-b from-gray-800 to-gray-700/50 px-4 lg:px-6">
                 <nav
                      class="*:px-4 *:border *:pb-2 *:pt-2.5 *:text-xs *:-mb-px *:font-semibold *:rounded-t-md is-active *:bg-gray-700 *:border-gray-600 *:text-gray-300 hover:*:bg-gray-600/70 hover:*:text-gray-300 flex space-x-2 [&>.is-active]:border-b-gray-800 [&>.is-active]:bg-gray-800 [&>.is-active]:text-sky-400">
                     <button type="button" :class="activeTab == 'tab1' ? 'is-active' : ''" @click.prevent ="activeTab='tab1'">通用参数</button>
