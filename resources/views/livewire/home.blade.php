@@ -246,6 +246,9 @@
                         <div class="flex items-center gap-2">
                             <h4 class="text-sm font-bold leading-none text-gray-50">Dali Bot </h4>
                             <span class="text-xs font-medium text-slate-400">{{ $task->created_at }}</span>
+                            <span
+                                  class="inline-flex items-center rounded bg-sky-400/10 px-1 py-0.5 text-xs font-semibold text-sky-400 ring-1 ring-inset ring-sky-400/30">{{ $task->aiprovider }}</span>
+
                         </div>
 
                         <p class="mt-1 max-w-4xl break-all text-sm font-bold text-gray-100">
@@ -258,14 +261,14 @@
 
                         @if ($task->result)
                             @if ($task->result == 'block.png')
-                                <div class="mt-2 inline-block overflow-hidden rounded-md bg-gray-800/70">
+                                <div class="mt-2 inline-block overflow-hidden rounded-md bg-gray-800/70 shadow-lg">
                                     <img class="size-64 lg:size-80 object-contain"
                                          src="{{ Storage::disk('qiniu')->url($task->result) }}?imageView2/0/w/640/format/jpg">
                                 </div>
                             @else
-                                <div class="mt-2 inline-block cursor-pointer overflow-hidden rounded-md bg-gray-800/70"
+                                <div class="mt-2 inline-block cursor-pointer overflow-hidden rounded-md bg-gray-800/70 shadow-lg"
                                      wire:click.stop="$dispatch('openModal', { component: 'viewer', arguments: { task: {{ $task->id }} }})">
-                                    <img class="size-64 lg:size-80 object-contain"
+                                    <img class="size-64 lg:size-80 object-cover"
                                          src="{{ Storage::disk('qiniu')->url($task->result) }}?imageView2/0/w/640/format/jpg">
                                 </div>
                             @endif

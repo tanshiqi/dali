@@ -34,14 +34,14 @@ class Login extends Component
 
             //如果用户存在则直接登录
             if ($this->checkUserExist()) {
-                Auth::loginUsingId($this->user_id);
+                Auth::loginUsingId($this->user_id, true);
             } else {
                 $user = User::create([
                     'name' => Str::random(12),
                     'client_id' => $client->id,
                 ]);
                 $this->user_id = $user->id;
-                Auth::login($user);
+                Auth::login($user, true);
             }
 
             return redirect('/u/'.$this->user_id);
