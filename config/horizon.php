@@ -182,7 +182,7 @@ return [
     'defaults' => [
         'supervisor-1' => [
             'connection' => 'redis',
-            'queue' => ['default', 'baidu', 'stablediffusion', 'dalle'],
+            'queue' => ['default', 'baidu', 'stablediffusion', 'dalle', 'midjourney'],
             'balance' => 'auto',
             'autoScalingStrategy' => 'time',
             'maxProcesses' => 1,

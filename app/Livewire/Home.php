@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Jobs\ProcessDallE;
 use App\Jobs\ProcessDrawing;
+use App\Jobs\ProcessMidjourney;
 use App\Jobs\ProcessStableDiffusion;
 use App\Models\Task;
 use Illuminate\Support\Facades\Storage;
@@ -124,6 +125,10 @@ class Home extends Component
 
             case 'DALL-E':
                 ProcessDallE::dispatch($task);
+                break;
+
+            case 'Midjourney':
+                ProcessMidjourney::dispatch($task);
                 break;
 
             default:
