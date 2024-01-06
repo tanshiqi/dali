@@ -61,8 +61,12 @@ class Midjourney
     {
         // logger()->notice($request->all());
         if (data_get($request, 'status') == 'SUCCESS') {
-            $imgOrigin = data_get($request, 'imageUrl');
             $task_id = data_get($request, 'id');
+            info([
+                'message' => 'Midjourney webhook success',
+                'task_id' => $task_id,
+            ]);
+            $imgOrigin = data_get($request, 'imageUrl');
             $tasks = Task::where('task_id', $task_id); // 可能有多条记录
 
             try {
@@ -75,10 +79,7 @@ class Midjourney
                     'width' => $savedImage['width'],
                     'height' => $savedImage['height'],
                 ]);
-                info([
-                    'message' => 'Midjourney webhook success',
-                    'task_id' => $task_id,
-                ]);
+
                 info('Midjourney 任务完成，task_id: '.$task_id);
 
             } catch (\Exception $e) {
