@@ -42,7 +42,7 @@
                     <button type="button" :class="activeTab == 'tab2' ? 'is-active' : ''" @click.prevent ="activeTab='tab2'"
                             x-show="$wire.aiprovider=='Stable Diffusion'">SD 参数</button>
                 </nav>
-                <div class="mb-[7px] flex-shrink-0">
+                <div class="mb-[7px] flex-shrink-0 lg:hidden">
                     <livewire:components.ai-selector wire:model='aiprovider' />
                 </div>
 
