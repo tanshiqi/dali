@@ -21,9 +21,8 @@
                     <span>{{ 'CFG Scale ' . data_get($task, 'params.cfg_scale') }}</span>
                 @endif
 
-                @if ($task['aiprovider'] != 'Midjourney')
-                    <span>{{ $task['width'] . ' x ' . $task['height'] }}</span>
-                @endif
+                <span>{{ $task['width'] . ' x ' . $task['height'] }}</span>
+
             </div>
 
             @if ($task['aiprovider'] == 'Midjourney' && !data_get($task, 'params.main_task'))
