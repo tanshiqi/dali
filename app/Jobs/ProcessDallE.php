@@ -2,16 +2,14 @@
 
 namespace App\Jobs;
 
-use App\Censor;
 use App\Models\Task;
+use App\Qiniu;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 
 class ProcessDallE implements ShouldQueue
 {
@@ -52,21 +50,12 @@ class ProcessDallE implements ShouldQueue
         if ($response->ok()) {
             try {
                 $imageBase64 = data_get($response->json(), 'data.0.b64_json');
-                // 写文件到七牛
-                $disk = Storage::disk('qiniu');
-                $filename = Str::random(16).'.png';
-                $disk->put($filename, base64_decode($imageBase64));
+                // 写文件到七牛并审核
+                $savedImage = Qiniu::put64($imageBase64);
 
-                // 审查图片
-                if (Censor::censorImageViaBaidu(Storage::disk('qiniu')->url($filename))) {
-                    $this->task->update([
-                        'result' => $filename,
-                    ]);
-                } else {
-                    $this->task->update([
-                        'result' => 'block.png',
-                    ]);
-                }
+                $this->task->update([
+                    'result' => $savedImage['key'],
+                ]);
                 info('DALL-E 任务完成，task_id: '.$this->task->task_id);
 
             } catch (\Exception $e) {

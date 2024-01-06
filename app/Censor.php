@@ -37,7 +37,7 @@ class Censor
                         'image' => $image,
                         'response' => $response->json(),
                     ]);
-                    Storage::disk('s3')->delete(pathinfo($image)['basename']);
+                    // Storage::disk('s3')->delete(pathinfo($image)['basename']);
 
                     return false;
                 }
