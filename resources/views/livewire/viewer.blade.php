@@ -1,6 +1,6 @@
 <div class="absolute inset-0 flex h-full w-full flex-col bg-gray-950 lg:flex-row">
     <div class="flex h-full w-full cursor-pointer items-center justify-center overflow-hidden p-1 lg:p-4" wire:click="$dispatch('closeModal')">
-        <img class="max-h-full max-w-full rounded-md object-contain" src="{{ Storage::disk('qiniu')->url($task['result']) . '?imageView2/0/w/1000/format/jpg' }}">
+        <img class="max-h-full max-w-full rounded-md object-contain" src="{{ Storage::disk('qiniu')->url($task['result']) . '?imageView2/0/w/1024/format/jpg' }}">
     </div>
     <div class="flex max-h-full flex-shrink-0 flex-col justify-between bg-gray-900/50 p-4 text-gray-300 lg:w-96 lg:p-7">
         <div class="flex flex-1 flex-col gap-y-4">
