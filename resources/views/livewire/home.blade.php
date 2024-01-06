@@ -267,7 +267,7 @@
                                 </div>
                             @else
                                 <div class="mt-2 inline-block cursor-pointer overflow-hidden rounded-md bg-gray-800/70 shadow-lg"
-                                     wire:click.stop="$dispatch('openModal', { component: 'viewer', arguments: { task: {{ $task->id }} }})">
+                                     wire:click.stop="$dispatch('openModal', { component: 'viewer', arguments: { task: {{ $task->makeHidden(['user_id', 'url', 'change_degree', 'updated_at']) }} }})">
                                     <img class="size-64 lg:size-80 object-cover"
                                          src="{{ Storage::disk('qiniu')->url($task->result) }}?imageView2/0/w/640/format/jpg">
                                 </div>

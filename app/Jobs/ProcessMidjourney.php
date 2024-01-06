@@ -27,7 +27,7 @@ class ProcessMidjourney implements ShouldQueue
      */
     public function handle(): void
     {
-        $url = 'http://sg.atan.io:8080/mj/submit/imagine';
+        $url = env('MJ_PROXY').'/mj/submit/imagine';
         $headers = [
             'mj-api-secret' => env('MJ_APIKEY'),
         ];

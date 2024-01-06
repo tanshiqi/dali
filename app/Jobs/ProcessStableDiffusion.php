@@ -40,7 +40,7 @@ class ProcessStableDiffusion implements ShouldQueue
             'height' => $this->task->height,
             // 'change_degree' => $this->task->change_degree,
             // 'url' => $this->task->reference,
-        ], $this->task->sdparams);
+        ], $this->task->params);
 
         // logger($params);
 

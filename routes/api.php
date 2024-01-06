@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Api\Midjourney;
+use App\Http\Controllers\Api\MidjourneyController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,4 +19,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/midjourney/webhook', [Midjourney::class, 'webhook'])->name('midjourney.webhook.update');
+Route::post('/midjourney/webhook', [MidjourneyController::class, 'webhook'])->name('midjourney.webhook');

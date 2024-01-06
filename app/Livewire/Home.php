@@ -8,6 +8,7 @@ use App\Jobs\ProcessMidjourney;
 use App\Jobs\ProcessStableDiffusion;
 use App\Models\Task;
 use Illuminate\Support\Facades\Storage;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
@@ -52,6 +53,15 @@ class Home extends Component
         if (auth()->id() != $this->shortid) {
             auth()->logout();
         }
+    }
+
+    #[On('refrshScrollTop')]
+    public function refrshScrollTop()
+    {
+        $this->js('
+            $wire.$refresh();
+            window.scrollTo({top: 0, behavior: "smooth"})
+        ');
     }
 
     public function updatedPhoto()
@@ -101,22 +111,27 @@ class Home extends Component
             'height' => $height,
             'url' => $reference,
             'change_degree' => $change_degree,
-            'sdparams' => [
-                'negative_prompt' => config('dali.default_negative_prompt').$this->negative_prompt,
-                'sampler_name' => $this->sampler_name,
-                'steps' => $this->steps,
-                'cfg_scale' => $this->cfg_scale,
-                'alwayson_scripts' => [
-                    'face editor ex' => [
-                        'args' => [
-                            [
-                                'prompt_for_face' => $this->prompt_for_face,
+        ]);
+
+        if ($aiprovider == 'Stable Diffusion') {
+            $task->update([
+                'params' => [
+                    'negative_prompt' => config('dali.default_negative_prompt').$this->negative_prompt,
+                    'sampler_name' => $this->sampler_name,
+                    'steps' => $this->steps,
+                    'cfg_scale' => $this->cfg_scale,
+                    'alwayson_scripts' => [
+                        'face editor ex' => [
+                            'args' => [
+                                [
+                                    'prompt_for_face' => $this->prompt_for_face,
+                                ],
                             ],
                         ],
                     ],
                 ],
-            ],
-        ]);
+            ]);
+        }
 
         switch ($this->aiprovider) {
             case 'Baidu AI':
@@ -137,6 +152,9 @@ class Home extends Component
         }
 
         sleep(1);
+        $this->js('
+            window.scrollTo({top: 0, behavior: "smooth"})
+        ');
     }
 
     public function getResult($task_id)

@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('tasks', function (Blueprint $table) {
-            $table->text('sdparams')->nullable()->after('change_degree');
+            $table->text('params')->nullable()->after('change_degree');
         });
     }
 
@@ -22,7 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('tasks', function (Blueprint $table) {
-            $table->dropColumn('sdparams');
+            $table->dropColumn('params');
         });
     }
 };
