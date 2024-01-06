@@ -59,7 +59,7 @@ class Midjourney
 
     public static function webhook(Request $request)
     {
-        logger()->notice($request->all());
+        // logger()->notice($request->all());
         if (data_get($request, 'status') == 'SUCCESS') {
             $imgOrigin = data_get($request, 'imageUrl');
             $task_id = data_get($request, 'id');

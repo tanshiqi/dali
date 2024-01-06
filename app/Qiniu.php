@@ -15,11 +15,18 @@ class Qiniu
         $filename = Str::random(16).'.png';
         $disk->getAdapter()->fetch($filename, $fetchUrl);
 
-        $result = Http::get($disk->url($filename).'?imageInfo')->json();
+        $info = Http::get($disk->url($filename).'?imageInfo')->json();
 
-        return array_merge([
+        $result = array_merge([
             'key' => $filename,
-        ], $result);
+        ], $info);
+
+        info([
+            'message' => '七牛转存成功',
+            'response' => $result,
+        ]);
+
+        return $result;
 
     }
 }
