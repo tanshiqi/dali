@@ -35,13 +35,17 @@
             </div>
             {{-- tabs begin --}}
             <div
-                 class="relative flex h-[52px] flex-shrink-0 flex-col justify-end border-b border-gray-600 bg-gradient-to-b from-gray-800 to-gray-700/50 px-4 lg:px-6">
+                 class="relative flex h-[52px] items-end justify-between border-b border-gray-600 bg-gradient-to-b from-gray-800 to-gray-700/50 px-4 lg:px-6">
                 <nav
                      class="*:px-4 *:border *:pb-2 *:pt-2.5 *:text-xs *:-mb-px *:font-semibold *:rounded-t-md is-active *:bg-gray-700 *:border-gray-600 *:text-gray-300 hover:*:bg-gray-600/70 hover:*:text-gray-300 flex space-x-2 [&>.is-active]:border-b-gray-800 [&>.is-active]:bg-gray-800 [&>.is-active]:text-sky-400">
                     <button type="button" :class="activeTab == 'tab1' ? 'is-active' : ''" @click.prevent ="activeTab='tab1'">通用参数</button>
                     <button type="button" :class="activeTab == 'tab2' ? 'is-active' : ''" @click.prevent ="activeTab='tab2'"
                             x-show="$wire.aiprovider=='Stable Diffusion'">SD 参数</button>
                 </nav>
+                <div class="mb-[7px] flex-shrink-0">
+                    <livewire:components.ai-selector wire:model='aiprovider' />
+                </div>
+
             </div>
             {{-- tabs end --}}
 
@@ -231,7 +235,16 @@
             </button>
         </div>
 
-        <livewire:components.ai-selector wire:model='aiprovider' />
+        {{-- <livewire:components.ai-selector wire:model='aiprovider' /> --}}
+        <button class="text-gray-200" type="button" wire:click='quit' wire:confirm="您可以收藏当前的地址随时继续您的创作，确定现在要退出吗？">
+            <svg class="size-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none"
+                 stroke-linecap="round" stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2" />
+                <path d="M9 12h12l-3 -3" />
+                <path d="M18 15l3 -3" />
+            </svg>
+        </button>
 
     </div>
 
