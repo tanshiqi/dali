@@ -14,6 +14,10 @@ class MidjourneyController extends Controller
      */
     public function webhook(Request $request)
     {
-        return Midjourney::webhook($request);
+        Midjourney::webhook($request);
+
+        return response()->json([
+            'data' => 'success',
+        ]);
     }
 }

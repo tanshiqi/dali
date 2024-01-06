@@ -91,8 +91,5 @@ class Midjourney
             }
         }
 
-        return response()->json([
-            'data' => 'success',
-        ]);
     }
 }
