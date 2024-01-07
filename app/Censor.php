@@ -91,8 +91,9 @@ class Censor
                 'image' => $image,
                 'response' => $result,
             ]);
-            // 删除图片
-            Storage::disk('s3')->delete(pathinfo($image)['basename']);
+            // 移动图片至block文件夹
+            // Storage::disk('disk')->delete(parse_url($image, PHP_URL_PATH));
+            Storage::disk('qiniu')->move(parse_url($image, PHP_URL_PATH), 'block'.parse_url($image, PHP_URL_PATH));
 
             return false;
         }
