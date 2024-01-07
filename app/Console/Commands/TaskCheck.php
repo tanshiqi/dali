@@ -50,7 +50,8 @@ class TaskCheck extends Command
         $response = Http::withHeaders($headers)->get($url);
         if ($response->ok()) {
             if ($response->json('status') == 'SUCCESS') {
-                $savedImage = Qiniu::fetch($response->json('imageUrl'));
+                $fetchUrl = str_replace('https://', 'https://wsrv.nl/?url=', $response->json('imageUrl'));
+                $savedImage = Qiniu::fetch($fetchUrl);
 
                 $task->update([
                     'result' => $savedImage['key'],
