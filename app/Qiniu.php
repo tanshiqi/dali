@@ -47,7 +47,8 @@ class Qiniu
     public static function censor($image)
     {
         $disk = self::getDisk();
-        $imgUrl = $disk->url($image);
+        // 使用小尺寸审核
+        $imgUrl = $disk->url($image).'?imageView2/0/w/1024/format/jpg';
 
         // 审核图片
         if (Censor::censorImageViaBaidu($imgUrl)) {
