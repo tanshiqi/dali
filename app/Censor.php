@@ -21,35 +21,14 @@ class Censor
         $response = Http::asForm()->post($url, $params);
 
         if ($response->ok()) {
-            try {
-                if ($response->json('conclusionType') == 1) {
-                    info([
-                        'message' => '图片审核通过',
-                        'image' => $image,
-                        'response' => $response->json(),
-                    ]);
 
-                    return true;
+            if ($response->json('conclusionType') == 1) {
+                return self::censorPass($image, $response);
 
-                } else {
-                    logger()->warning([
-                        'message' => '图片审核不通过',
-                        'image' => $image,
-                        'response' => $response->json(),
-                    ]);
-                    // Storage::disk('s3')->delete(pathinfo($image)['basename']);
-
-                    return false;
-                }
-            } catch (\Throwable $th) {
-                logger()->error([
-                    'message' => '图片审核错误',
-                    'image' => $image,
-                    'response' => $response->json(),
-                ]);
-
-                return false;
             }
+
+            return self::censorBlock($image, $response);
+
         }
     }
 
@@ -73,31 +52,38 @@ class Censor
             }
         }';
 
-        $result = $argusManager->censorImage($body);
+        $response = $argusManager->censorImage($body);
 
-        if (data_get($result, '0.result.suggestion') == 'pass') {
-            // 审核通过
-            info([
-                'message' => '图片审核通过',
-                'image' => $image,
-                'response' => $result,
-            ]);
-
-            return true;
-        } else {
-            // 审核不通过
-            $blockPlace = 'block'.parse_url($image, PHP_URL_PATH);
-            // 移动图片至block文件夹，不删除
-            // Storage::disk('disk')->delete(parse_url($image, PHP_URL_PATH));
-            Storage::disk('qiniu')->move(parse_url($image, PHP_URL_PATH), $blockPlace);
-
-            logger()->warning([
-                'message' => '图片审核不通过',
-                'image' => Storage::disk('qiniu')->url($blockPlace).'?'.parse_url($image, PHP_URL_QUERY),
-                'response' => $result,
-            ]);
-
-            return false;
+        if (data_get($response, '0.result.suggestion') == 'pass') {
+            return self::censorPass($image, $response);
         }
+
+        return self::censorBlock($image, $response);
+    }
+
+    public static function censorPass($image, $response)
+    {
+        info([
+            'message' => '图片审核通过',
+            'image' => $image,
+            'response' => $response->json(),
+        ]);
+
+        return true;
+    }
+
+    public static function censorBlock($image, $response)
+    {
+        $blockPlace = 'block'.parse_url($image, PHP_URL_PATH);
+        // 移动图片至block文件夹，不删除
+        Storage::disk('qiniu')->move(parse_url($image, PHP_URL_PATH), $blockPlace);
+
+        logger()->warning([
+            'message' => '图片审核不通过',
+            'image' => Storage::disk('qiniu')->url($blockPlace).'?'.parse_url($image, PHP_URL_QUERY),
+            'response' => $response,
+        ]);
+
+        return false;
     }
 }
