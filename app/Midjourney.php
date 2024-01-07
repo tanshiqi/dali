@@ -25,7 +25,7 @@ class Midjourney
 
         if ($response->ok()) {
             try {
-                $subtask_id = data_get($response->json(), 'result');
+                $subtask_id = $response->json('result');
                 $refiningTask = Task::create([
                     'user_id' => auth()->id(),
                     'aiprovider' => 'Midjourney',
@@ -40,7 +40,7 @@ class Midjourney
                 info('Midjourney Refining 任务已创建，task_id: '.$subtask_id);
 
                 // 任务已经重复
-                if (data_get($response->json(), 'code') == 21) {
+                if ($response->json('code') == 21) {
                     $oldTask = Task::where('task_id', $subtask_id)->first();
                     $refiningTask->update([
                         'result' => $oldTask->result,
@@ -59,14 +59,13 @@ class Midjourney
 
     public static function webhook(Request $request)
     {
-        // logger()->notice($request->all());
-        if (data_get($request, 'status') == 'SUCCESS') {
-            $task_id = data_get($request, 'id');
-            info([
-                'message' => 'Midjourney webhook success',
-                'task_id' => $task_id,
-            ]);
-            $imgOrigin = data_get($request, 'imageUrl');
+        if ($request->json('status') == 'SUBMITTED') {
+            info('Midjourney webhook 已提交，task_id: '.$request->json('id'));
+        }
+        if ($request->json('status') == 'SUCCESS') {
+            $task_id = $request->json('id');
+            info('Midjourney webhook 成功，task_id: '.$task_id);
+            $imgOrigin = $request->json('imageUrl');
             $tasks = Task::where('task_id', $task_id); // 可能有多条记录
 
             try {
