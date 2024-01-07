@@ -86,14 +86,16 @@ class Censor
             return true;
         } else {
             // 审核不通过
+            $blockPlace = 'block'.parse_url($image, PHP_URL_PATH);
+            // 移动图片至block文件夹，不删除
+            // Storage::disk('disk')->delete(parse_url($image, PHP_URL_PATH));
+            Storage::disk('qiniu')->move(parse_url($image, PHP_URL_PATH), $blockPlace);
+
             logger()->warning([
                 'message' => '图片审核不通过',
-                'image' => $image,
+                'image' => Storage::disk('qiniu')->url($blockPlace).'?'.parse_url($image, PHP_URL_QUERY),
                 'response' => $result,
             ]);
-            // 移动图片至block文件夹
-            // Storage::disk('disk')->delete(parse_url($image, PHP_URL_PATH));
-            Storage::disk('qiniu')->move(parse_url($image, PHP_URL_PATH), 'block'.parse_url($image, PHP_URL_PATH));
 
             return false;
         }
