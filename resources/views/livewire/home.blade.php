@@ -90,7 +90,7 @@
                         <p class="mt-2 text-xs leading-5 text-gray-400">参考图可选。<span x-show="aiprovider=='Baidu AI'">影响因子数字 1-10，数值越大参考图影响越大。</span>
                         </p>
                     </div>
-                    <div>
+                    <div x-show="$wire.aiprovider != 'Midjourney'">
                         <label class="mb-2 block text-sm font-medium leading-6 text-white" for="size">图片尺寸 <span
                                   class="text-orange-500">*</span></label>
                         <div>
@@ -115,7 +115,7 @@
                                   class="text-orange-500">*</span></label>
                         <div>
                             <textarea class="w-full resize-none rounded-md border-0 bg-white/5 py-1.5 align-top text-sm leading-6 text-white shadow-sm ring-1 ring-inset ring-white/10 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-500"
-                                      id="prompt" name="prompt" rows="4" wire:model='prompt' placeholder="生图的文本描述，仅支持中文、日常标点符号" autocomplete="off"></textarea>
+                                      id="prompt" name="prompt" rows="4" wire:model='prompt' placeholder="生图的文本描述" autocomplete="off"></textarea>
                         </div>
                         <p class="mt-2 block text-xs leading-5 text-gray-400">生图的文本描述，Baidu AI 仅支持中文及日常标点符号，不支持英文、特殊符号，限制 200 字。</p>
                     </div>
