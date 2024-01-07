@@ -28,7 +28,7 @@ class TaskCheck extends Command
      */
     public function handle()
     {
-        $tasks = Task::whereNull('result')->get();
+        $tasks = Task::where('result', '')->orWhereNull('result')->get();
         foreach ($tasks as $task) {
             switch ($task->aiprovider) {
                 case 'Midjourney':
