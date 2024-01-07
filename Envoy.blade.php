@@ -1,6 +1,6 @@
 @servers(['web' => 'hk.atan.io'])
 
-@task('deploy')
+@task('update')
     cd /var/www/dali
     git pull origin main
     npm run build
