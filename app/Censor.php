@@ -23,11 +23,11 @@ class Censor
         if ($response->ok()) {
 
             if ($response->json('conclusionType') == 1) {
-                return self::censorPass($image, $response);
+                return self::censorPass($image, $response->json());
 
             }
 
-            return self::censorBlock($image, $response);
+            return self::censorBlock($image, $response->json());
 
         }
     }
