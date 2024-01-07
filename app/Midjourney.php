@@ -60,11 +60,11 @@ class Midjourney
     public static function webhook(Request $request)
     {
         if ($request->json('status') == 'SUBMITTED') {
-            info('Midjourney webhook 已提交，task_id: '.$request->json('id'));
+            info('Midjourney webhook submitted，task_id: '.$request->json('id'));
         }
         if ($request->json('status') == 'SUCCESS') {
             $task_id = $request->json('id');
-            info('Midjourney webhook 成功，task_id: '.$task_id);
+            info('Midjourney webhook success，task_id: '.$task_id);
             $imgOrigin = $request->json('imageUrl');
             $tasks = Task::where('task_id', $task_id); // 可能有多条记录
 

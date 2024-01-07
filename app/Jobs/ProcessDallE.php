@@ -49,7 +49,7 @@ class ProcessDallE implements ShouldQueue
 
         if ($response->ok()) {
             try {
-                $imageBase64 = data_get($response->json(), 'data.0.b64_json');
+                $imageBase64 = $response->json('data.0.b64_json');
                 // 写文件到七牛并审核
                 $savedImage = Qiniu::put64($imageBase64);
 

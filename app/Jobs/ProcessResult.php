@@ -39,16 +39,16 @@ class ProcessResult implements ShouldQueue
         $response = Http::post($url, $params);
 
         if ($response->ok()) {
-            if (array_key_exists('error_code', $response->json()) || data_get($response->json(), 'data.task_status') == 'FAILED' || data_get($response->json(), 'data.sub_task_result_list.0.final_image_list.0.img_approve_conclusion') == 'block') {
+            if (array_key_exists('error_code', $response->json()) || $response->json('data.task_status') == 'FAILED' || $response->json('data.sub_task_result_list.0.final_image_list.0.img_approve_conclusion') == 'block') {
                 logger()->error([
                     'task_id' => $this->task_id,
                     'response' => $response->json(),
                 ]);
-                $this->getFailed($this->task_id, data_get($response->json(), 'data.sub_task_result_list.0.sub_task_error_code'));
+                $this->getFailed($this->task_id, $response->json('data.sub_task_result_list.0.sub_task_error_code'));
             }
 
-            if (data_get($response->json(), 'data.sub_task_result_list.0.final_image_list.0.img_approve_conclusion') == 'pass') {
-                $originImg = data_get($response->json(), 'data.sub_task_result_list.0.final_image_list.0.img_url');
+            if ($response->json('data.sub_task_result_list.0.final_image_list.0.img_approve_conclusion') == 'pass') {
+                $originImg = $response->json('data.sub_task_result_list.0.final_image_list.0.img_url');
 
                 // 转存到七牛云
                 $disk = Storage::disk('qiniu');

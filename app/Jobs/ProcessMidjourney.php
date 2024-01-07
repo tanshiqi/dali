@@ -41,7 +41,7 @@ class ProcessMidjourney implements ShouldQueue
         if ($response->ok()) {
             try {
                 $this->task->update([
-                    'task_id' => data_get($response->json(), 'result'),
+                    'task_id' => $response->json('result'),
                 ]);
                 info('Midjourney 任务已创建，task_id: '.$this->task->task_id);
 

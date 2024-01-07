@@ -46,7 +46,7 @@ class ProcessStableDiffusion implements ShouldQueue
 
         if ($response->ok()) {
             try {
-                $imageBase64 = data_get($response->json(), 'images.0');
+                $imageBase64 = $response->json('images.0');
 
                 // 写文件到七牛并审核
                 $savedImage = Qiniu::put64($imageBase64);

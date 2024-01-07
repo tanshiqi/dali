@@ -22,7 +22,7 @@ class Censor
 
         if ($response->ok()) {
             try {
-                if (data_get($response->json(), 'conclusionType') == 1) {
+                if ($response->json('conclusionType') == 1) {
                     info([
                         'message' => '图片审核通过',
                         'image' => $image,

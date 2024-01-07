@@ -61,14 +61,14 @@ class ProcessDrawing implements ShouldQueue
                 ]);
                 $task_id = $err_task_id;
             } else {
-                $task_id = data_get($response->json(), 'data.task_id');
+                $task_id = $response->json('data.task_id');
             }
             logger('任务已创建，task_id: '.$task_id);
 
             $this->task->update([
                 'task_id' => $task_id,
                 'result' => str_starts_with($task_id, 'err_') ? 'block.png' : null,
-                'error' => str_starts_with($task_id, 'err_') ? data_get($response->json(), 'error_msg') : null,
+                'error' => str_starts_with($task_id, 'err_') ? $response->json('error_msg') : null,
             ]);
         }
 
@@ -86,7 +86,7 @@ class ProcessDrawing implements ShouldQueue
 
         if ($response->ok()) {
             try {
-                if (array_key_exists('error_code', $response->json()) || data_get($response->json(), 'data.task_status') == 'FAILED' || data_get($response->json(), 'data.sub_task_result_list.0.final_image_list.0.img_approve_conclusion') == 'block') {
+                if (array_key_exists('error_code', $response->json()) || $response->json('data.task_status') == 'FAILED' || $response->json('data.sub_task_result_list.0.final_image_list.0.img_approve_conclusion') == 'block') {
                     logger()->error([
                         'prompt' => $this->task->prompt,
                         'task_id' => $this->task->task_id,
@@ -98,8 +98,8 @@ class ProcessDrawing implements ShouldQueue
                     ]);
                 }
 
-                if (data_get($response->json(), 'data.sub_task_result_list.0.final_image_list.0.img_approve_conclusion') == 'pass') {
-                    $originImg = data_get($response->json(), 'data.sub_task_result_list.0.final_image_list.0.img_url');
+                if ($response->json('data.sub_task_result_list.0.final_image_list.0.img_approve_conclusion') == 'pass') {
+                    $originImg = $response->json('data.sub_task_result_list.0.final_image_list.0.img_url');
 
                     // 转存到七牛云
                     $disk = Storage::disk('qiniu');
