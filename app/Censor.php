@@ -66,7 +66,7 @@ class Censor
         info([
             'message' => '图片审核通过',
             'image' => $image,
-            'response' => $response->json(),
+            'response' => $response,
         ]);
 
         return true;
