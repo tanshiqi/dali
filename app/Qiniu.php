@@ -15,32 +15,36 @@ class Qiniu
         return self::$disk ?? Storage::disk('qiniu');
     }
 
-    public static function fetch($fetchUrl)
+    public static function fetch($fetchUrl, $censor = true)
     {
         $disk = self::getDisk();
         $filename = Str::random(16).'.png';
         $disk->getAdapter()->fetch($filename, $fetchUrl);
-        $result = self::censor($filename);
+        if ($censor) {
+            $filename = self::censor($filename);
+        }
         info([
             'message' => '七牛转存成功',
-            'response' => $result,
+            'response' => $filename,
         ]);
 
-        return $result;
+        return $filename;
     }
 
-    public static function put64($imageBase64)
+    public static function put64($imageBase64, $censor = true)
     {
         $disk = self::getDisk();
         $filename = Str::random(16).'.png';
         $disk->put($filename, base64_decode($imageBase64));
-        $result = self::censor($filename);
+        if ($censor) {
+            $filename = self::censor($filename);
+        }
         info([
             'message' => '七牛转存Base64成功',
-            'response' => $result,
+            'response' => $filename,
         ]);
 
-        return $result;
+        return $filename;
     }
 
     // 审核图片
