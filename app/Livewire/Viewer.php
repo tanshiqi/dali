@@ -20,7 +20,7 @@ class Viewer extends ModalComponent
     {
         // sleep(300);
         Midjourney::refining($this->item['prompt'], $this->item['id'], $index);
-        $this->closeModalWithEvents(['refrshScrollTop']);
+        $this->dispatch('refrshScrollTop')->to(Home::class);
     }
 
     public function render()
