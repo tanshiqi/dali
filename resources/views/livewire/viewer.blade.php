@@ -1,6 +1,6 @@
 <div class="absolute inset-0 flex h-full w-full flex-col bg-gray-950 lg:flex-row">
     <div class="flex h-full w-full cursor-pointer items-center justify-center overflow-hidden p-1 lg:p-4" wire:click="$dispatch('closeModal')">
-        <img class="max-h-full max-w-full rounded-md object-contain" src="{{ Storage::disk('qiniu')->url($task['result']) . '?imageView2/0/w/1600/format/jpg' }}">
+        <img class="max-h-full max-w-full rounded-md object-contain" src="{{ Storage::disk('qiniu')->url($item['result']) . '?imageView2/0/w/1600/format/jpg' }}">
     </div>
     <div class="flex max-h-full flex-shrink-0 flex-col justify-between bg-gray-900/50 p-4 text-gray-300 lg:w-96 lg:p-7">
         <div class="flex flex-1 flex-col gap-y-4">
@@ -11,21 +11,21 @@
                     </svg>
                 </button>
             </div>
-            <p class="text-sm font-medium lg:text-base">{{ $task['prompt'] }}</p>
+            <p class="text-sm font-medium lg:text-base">{{ $item['prompt'] }}</p>
             <div
                  class="*:inline-flex *:items-center *:rounded-md *:bg-gray-400/10 *:px-2 *:py-1 *:text-xs *:font-medium *:text-gray-400 *:ring-1 *:ring-inset *:ring-gray-400/20 *:whitespace-nowrap *:mr-0.5 *:mb-0.5">
-                <span>{{ $task['aiprovider'] }}</span>
-                @if ($task['aiprovider'] == 'Stable Diffusion')
-                    <span>{{ 'Sampler ' . data_get($task, 'params.sampler_name') }}</span>
-                    <span>{{ 'Steps ' . data_get($task, 'params.steps') }}</span>
-                    <span>{{ 'CFG Scale ' . data_get($task, 'params.cfg_scale') }}</span>
+                <span>{{ $item['aiprovider'] }}</span>
+                @if ($item['aiprovider'] == 'Stable Diffusion')
+                    <span>{{ 'Sampler ' . data_get($item, 'params.sampler_name') }}</span>
+                    <span>{{ 'Steps ' . data_get($item, 'params.steps') }}</span>
+                    <span>{{ 'CFG Scale ' . data_get($item, 'params.cfg_scale') }}</span>
                 @endif
 
-                <span>{{ $task['width'] . ' x ' . $task['height'] }}</span>
+                <span>{{ $item['width'] . ' x ' . $item['height'] }}</span>
 
             </div>
 
-            @if ($task['aiprovider'] == 'Midjourney' && !data_get($task, 'params.main_task'))
+            @if ($upscale && $item['aiprovider'] == 'Midjourney' && !data_get($item, 'params.main_task'))
                 <div class="mt-4 flex items-start justify-between gap-x-4">
                     <div>
                         <h2 class="flex items-center gap-x-1 text-sm font-semibold leading-4 text-sky-500">
@@ -59,15 +59,17 @@
                 </div>
             @endif
 
+
+
         </div>
 
 
         <div class="mt-6 flex flex-shrink-0 items-center justify-between gap-x-2 lg:gap-x-4">
             <button class="rounded-md bg-white/10 px-3.5 py-2 text-xs font-semibold text-gray-300 shadow-sm hover:bg-white/20 focus:border-0 focus:ring-0 focus-visible:outline-none lg:w-1/2 lg:py-2.5 lg:text-sm"
-                    type="button" x-data="{ btntext: '复制提示词' }" @click="$clipboard('{{ $task['prompt'] }}');btntext='　已复制　'" x-text="btntext"
+                    type="button" x-data="{ btntext: '复制提示词' }" @click="$clipboard('{{ $item['prompt'] }}');btntext='　已复制　'" x-text="btntext"
                     x-effect="if(btntext != '复制提示词') setTimeout(() => btntext='复制提示词',1500)"></button>
             <a class="block rounded-md bg-white/10 px-3.5 py-2 text-center text-xs font-semibold text-gray-300 shadow-sm hover:bg-white/20 focus:border-0 focus:ring-0 focus-visible:outline-none lg:w-1/2 lg:py-2.5 lg:text-sm"
-               type="button" href="{{ Storage::disk('qiniu')->url($task['result']) . '?attname=' . Str::random(12) . '.png' }}">下载原图</a>
+               type="button" href="{{ Storage::disk('qiniu')->url($item['result']) . '?attname=' . Str::random(12) . '.png' }}">下载原图</a>
             <div class="flex-auto text-right lg:hidden">
                 <button class="rounded-full p-2 hover:bg-gray-800 focus-visible:outline-none" type="button" wire:click="$dispatch('closeModal')">
                     <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">

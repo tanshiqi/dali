@@ -2,7 +2,7 @@
 
 namespace App\Livewire;
 
-use App\Models\Task;
+use App\Models\Gallery as GalleryModel;
 use Livewire\Component;
 
 class Gallery extends Component
@@ -11,9 +11,7 @@ class Gallery extends Component
     {
 
         return view('livewire.gallery', [
-            'taskgroups' => Task::whereNotNull('result')->latest()->get()->groupBy(function ($item) {
-                return $item->created_at->format('Y-m-d');
-            }),
+            'items' => GalleryModel::latest()->get(),
         ]);
     }
 }

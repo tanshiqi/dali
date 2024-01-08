@@ -17,6 +17,6 @@ Route::middleware(['guest'])->group(function () {
     Route::get('/login', Login::class)->name('login');
 });
 
-Route::get('/admin/gallery', Gallery::class)->name('gallery');
+Route::get('/gallery', Gallery::class)->name('gallery');
 
 Route::get('/test', Test::class);

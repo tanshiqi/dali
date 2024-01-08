@@ -7,7 +7,9 @@ use LivewireUI\Modal\ModalComponent;
 
 class Viewer extends ModalComponent
 {
-    public $task;
+    public $item;
+
+    public $upscale = false;
 
     public static function destroyOnClose(): bool
     {
@@ -17,7 +19,7 @@ class Viewer extends ModalComponent
     public function refining($index)
     {
         // sleep(300);
-        Midjourney::refining($this->task['prompt'], $this->task['id'], $index);
+        Midjourney::refining($this->item['prompt'], $this->item['id'], $index);
         $this->closeModalWithEvents(['refrshScrollTop']);
     }
 
