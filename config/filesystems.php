@@ -50,7 +50,7 @@ return [
             'secret' => env('AWS_SECRET_ACCESS_KEY'),
             'region' => env('AWS_DEFAULT_REGION'),
             'bucket' => env('AWS_BUCKET'),
-            'url' => env('AWS_URL', 'https://ledo-teaching.s3.cn-east-1.qiniucs.com'),
+            'url' => env('AWS_URL', 'https://ledo-dali.s3.cn-east-1.qiniucs.com'),
             'endpoint' => env('AWS_ENDPOINT', 'https://s3.cn-east-1.qiniucs.com'),
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
             'throw' => false,
@@ -60,8 +60,8 @@ return [
             'driver' => 'qiniu',
             'access_key' => env('QINIU_ACCESS_KEY', 'AyiCghjf6sgB10PLyjqbyGaoU8TCPgZpDEpvVHD0'),
             'secret_key' => env('QINIU_SECRET_KEY', 'pWwYRBc8Msy0nk1Weq-uaxpTyWKabknkpWO0IGhZ'),
-            'bucket' => env('QINIU_BUCKET', 'ledo-teaching'),
-            'domain' => env('QINIU_DOMAIN', 'https://ledoteaching.cdn.pinweb.io'), // or host: https://xxxx.clouddn.com
+            'bucket' => env('QINIU_BUCKET', 'ledo-dali'),
+            'domain' => env('QINIU_DOMAIN', 'https://dali.cdn.pinweb.io'), // or host: https://xxxx.clouddn.com
         ],
 
     ],

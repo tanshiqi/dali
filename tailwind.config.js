@@ -15,7 +15,11 @@ export default {
         ],
     },
     theme: {
-        extend: {},
+        extend: {
+            colors: {
+                "gray-850": "#18212F",
+            },
+        },
     },
     plugins: [
         require("@tailwindcss/forms"),

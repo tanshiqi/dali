@@ -2,7 +2,7 @@
     <div class="flex h-full w-full cursor-pointer items-center justify-center overflow-hidden p-1 lg:p-4" wire:click="$dispatch('closeModal')">
         <img class="max-h-full max-w-full rounded-md object-contain" src="{{ Storage::disk('qiniu')->url($item['result']) . '?imageView2/0/w/1600/format/jpg' }}">
     </div>
-    <div class="flex max-h-full flex-shrink-0 flex-col justify-between bg-gray-900/50 p-4 text-gray-300 lg:w-96 lg:p-7">
+    <div class="flex max-h-full flex-shrink-0 flex-col justify-between bg-[#0a0f1d] p-4 text-gray-300 lg:w-96 lg:p-7">
         <div class="flex flex-1 flex-col gap-y-4">
             <div class="hidden items-center justify-end lg:flex">
                 <button class="rounded-full p-2 hover:bg-gray-800 focus-visible:outline-none" type="button" wire:click="$dispatch('closeModal')">
@@ -11,7 +11,7 @@
                     </svg>
                 </button>
             </div>
-            <p class="text-sm font-medium lg:text-base">{{ $item['prompt'] }}</p>
+            <p class="line-clamp-3 text-sm font-medium lg:line-clamp-none lg:text-base">{{ $item['prompt'] }}</p>
             <div
                  class="*:inline-flex *:items-center *:rounded-md *:bg-gray-400/10 *:px-2 *:py-1 *:text-xs *:font-medium *:text-gray-400 *:ring-1 *:ring-inset *:ring-gray-400/20 *:whitespace-nowrap *:mr-0.5 *:mb-0.5">
                 <span>{{ $item['aiprovider'] }}</span>
