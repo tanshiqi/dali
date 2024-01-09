@@ -8,4 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Gallery extends Model
 {
     use HasFactory;
+
+    protected $casts = [
+        'params' => 'array',
+    ];
+
+    public function task()
+    {
+        return $this->belongsTo(Task::class, 'task_id', 'task_id');
+    }
 }

@@ -3,6 +3,8 @@
 namespace App\Livewire;
 
 use App\Midjourney;
+use App\Models\Gallery;
+use App\Models\Task;
 use LivewireUI\Modal\ModalComponent;
 
 class Viewer extends ModalComponent
@@ -23,8 +25,21 @@ class Viewer extends ModalComponent
         $this->dispatch('refrshScrollTop')->to(Home::class);
     }
 
+    public function toggleFavorite($task_id)
+    {
+        $galleryExists = Gallery::where('task_id', $task_id)->exists();
+        if ($galleryExists) {
+            Gallery::where('task_id', $task_id)->delete();
+        } else {
+            $task = Task::select('task_id', 'aiprovider', 'prompt', 'result', 'width', 'height', 'params')->where('task_id', $task_id)->first()->toArray();
+            Gallery::create($task);
+        }
+    }
+
     public function render()
     {
-        return view('livewire.viewer');
+        return view('livewire.viewer', [
+            'inGallery' => Gallery::where('task_id', $this->item['task_id'])->exists(),
+        ]);
     }
 }

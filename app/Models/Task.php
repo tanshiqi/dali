@@ -12,4 +12,9 @@ class Task extends Model
     protected $casts = [
         'params' => 'array',
     ];
+
+    public function gallery()
+    {
+        return $this->hasOne(Gallery::class, 'task_id', 'task_id');
+    }
 }
